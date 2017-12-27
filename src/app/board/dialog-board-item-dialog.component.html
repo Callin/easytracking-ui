@@ -1,0 +1,41 @@
+<div class="board-item-dialog">
+  <h1 mat-dialog-title>{{data.title}}</h1>
+
+  <div  mat-dialog-content>
+
+    <div class="row">
+      <!--<label>Description: </label>-->
+      <mat-form-field>
+        <textarea matInput placeholder='Description' value={{data.description}}></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <!--<label>Owner: </label>-->
+      <mat-form-field>
+        <input matInput placeholder='Owner' value={{data.owner}}>
+      </mat-form-field>
+      <!--<label>Priority: </label>-->
+      <mat-form-field>
+        <input matInput placeholder='Priority' value={{data.priority}}>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <!--<label>Priority: </label>-->
+      <mat-form-field>
+        <input matInput placeholder='Status' value={{data.status}}>
+      </mat-form-field>
+
+      <!--<label>Estimation: </label>-->
+      <mat-form-field>
+        <input matInput placeholder='Estimation' value={{data.estimation}}>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Save</button>
+  </div>
+</div>

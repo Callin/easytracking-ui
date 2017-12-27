@@ -1,0 +1,34 @@
+.card-columns {
+  min-height: 200px;
+  min-width: 350px;
+}
+
+.board-item {
+  height: 180px;
+  width: 300px;
+  margin: 20px;
+}
+
+.board-item-dialog {
+  display: flex;
+  flex-direction: column;
+}
+
+.board-item-dialog > * {
+  width: 100%;
+}
+
+.owner {
+  margin-top: 25px;
+}
+
+.status-dropdown {
+  margin-top: 20px;
+  width: 115px !important;
+  height: 33px !important;
+}
+
+
+.board-col-header {
+  border-bottom: 2px solid crimson;
+}

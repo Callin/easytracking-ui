@@ -1,0 +1,150 @@
+<div class="row">
+  <div class="col-sm-2">
+    <div>Project: easytracking</div>
+  </div>
+
+  <div class="col-sm-2">
+    <div>Sprint: 2</div>
+  </div>
+</div>
+
+
+<!-- Second set of rows -->
+<div class="row">
+  <div class="col-md-3">
+    <div class="card card-columns card-outline-success mb-3">
+      <div class="card-header card-inverse card-success">New</div>
+
+      <div class="card board-item card-outline-success mb-3" *ngFor="let item of getNewItems()">
+        <div class="card-header card-inverse card-success" (click)="openDialog(item, false)">{{item.title}}</div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="owner">Owner: {{item.owner}}</div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <select class="form-control status-dropdown" #selectStatus (change)="setStatus(selectStatus.value, item)">
+                <option>{{item.status}}</option>
+                <option [value]='IN_PROGRESS'>{{IN_PROGRESS}}</option>
+                <option>{{IN_REVIEW}}</option>
+                <option>{{DONE}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div>Priority: {{item.priority}}</div>
+          </div>
+          <div class="col-sm-6">
+            <div>Estimate: {{item.estimation}} h</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card card-columns card-outline-success mb-3">
+      <div class="card-header card-inverse card-success">In progress</div>
+
+      <div class="card board-item card-outline-success mb-3" *ngFor="let item of getInProgressItems()">
+        <div class="card-header card-inverse card-success" (click)="openDialog(item, false)">{{item.title}}</div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="owner">Owner: {{item.owner}}</div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <select class="form-control status-dropdown" #selectStatus (change)="setStatus(selectStatus.value, item)">
+                <option>{{item.status}}</option>
+                <option [value]='NEW'>{{NEW}}</option>
+                <option>{{IN_REVIEW}}</option>
+                <option>{{DONE}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div>Priority: {{item.priority}}</div>
+          </div>
+          <div class="col-sm-6">
+            <div>Estimate: {{item.estimation}} h</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card card-columns card-outline-success mb-3" droppable>
+      <div class="card-header card-inverse card-success">In review</div>
+
+      <div class="card board-item card-outline-success mb-3" *ngFor="let item of getInReviewItems()">
+        <div class="card-header card-inverse card-success" (click)="openDialog(item, false)">{{item.title}}</div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="owner">Owner: {{item.owner}}</div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <select class="form-control status-dropdown" #selectStatus (change)="setStatus(selectStatus.value, item)">
+                <option>{{item.status}}</option>
+                <option [value]='NEW'>{{NEW}}</option>
+                <option>{{IN_PROGRESS}}</option>
+                <option>{{DONE}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div>Priority: {{item.priority}}</div>
+          </div>
+          <div class="col-sm-6">
+            <div>Estimate: {{item.estimation}} h</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card card-columns card-outline-success mb-3" droppable>
+      <div class="card-header card-inverse card-success">Done</div>
+
+      <div class="card board-item card-outline-success mb-3" *ngFor="let item of getDoneItems()">
+        <div class="card-header card-inverse card-success" (click)="openDialog(item, false)">{{item.title}}</div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="owner">Owner: {{item.owner}}</div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <select class="form-control status-dropdown" #selectStatus (change)="setStatus(selectStatus.value, item)">
+                <option>{{item.status}}</option>
+                <option [value]='NEW'>{{NEW}}</option>
+                <option>{{IN_PROGRESS}}</option>
+                <option>{{IN_REVIEW}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div>Priority: {{item.priority}}</div>
+          </div>
+          <div class="col-sm-6">
+            <div>Estimate: {{item.estimation}} h</div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
