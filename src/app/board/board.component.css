@@ -1,5 +1,5 @@
 .board-item {
-  height: 180px;
+  height: 200px;
   width: 300px;
 }
 
@@ -36,7 +36,7 @@
 }
 
 .owner {
-  margin-top: 25px;
+  padding-top: 10px;
 }
 
 .status-dropdown {

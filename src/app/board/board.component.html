@@ -9,7 +9,8 @@
         <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <div>Owner: {{item.owner}}</div>
+
+        <div class="owner">Owner: {{item.owner}}</div>
 
         <mat-form-field>
           <mat-select [(value)]="item.status">
@@ -19,6 +20,7 @@
             <mat-option value={{DONE}}>{{DONE}}</mat-option>
           </mat-select>
         </mat-form-field>
+
 
         <div>Priority: {{item.priority}}</div>
         <div>Estimate: {{item.estimation}} h</div>
