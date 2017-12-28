@@ -66,7 +66,6 @@ export class BoardComponent implements OnInit {
       const dialogRef = this.dialog.open(DialogBoardItemComponentDialog, {
         width: '80%',
         height: '60%',
-        position: {top: '10px'},
         data: item
       });
 
@@ -80,7 +79,7 @@ export class BoardComponent implements OnInit {
 
 @Component({
   selector: 'app-dialog-board-item-dialog',
-  templateUrl: 'dialog-board-item-dialog.component.html',
+  templateUrl: 'board-item-dialog.html',
   styleUrls: ['./board.component.css']
 })
 export class DialogBoardItemComponentDialog {

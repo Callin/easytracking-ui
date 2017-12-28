@@ -1,150 +1,135 @@
-<div class="row">
-  <div class="col-sm-2">
-    <div>Project: easytracking</div>
-  </div>
+<p (click)="openDialog(getNewItems().pop(), false)">dsdad</p>
+<mat-grid-list cols="5">
+  <mat-grid-tile>
+    <mat-grid-tile-header>
+      User Stories
+    </mat-grid-tile-header>
+    <mat-card class="board-item" *ngFor="let item of getNewItems()">
+      <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
+        <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div>Owner: {{item.owner}}</div>
 
-  <div class="col-sm-2">
-    <div>Sprint: 2</div>
-  </div>
-</div>
+        <mat-form-field>
+          <mat-select [(value)]="item.status">
+            <mat-option value={{NEW}}>{{NEW}}</mat-option>
+            <mat-option value={{IN_PROGRESS}}>{{IN_PROGRESS}}</mat-option>
+            <mat-option value={{IN_REVIEW}}>{{IN_REVIEW}}</mat-option>
+            <mat-option value={{DONE}}>{{DONE}}</mat-option>
+          </mat-select>
+        </mat-form-field>
 
+        <div>Priority: {{item.priority}}</div>
+        <div>Estimate: {{item.estimation}} h</div>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
 
-<!-- Second set of rows -->
-<div class="row">
-  <div class="col-md-3">
-    <div class="card card-columns card-outline-success mb-3">
-      <div class="card-header card-inverse card-success">New</div>
+  <mat-grid-tile>
+    <mat-grid-tile-header>
+      New
+    </mat-grid-tile-header>
+    <mat-card class="board-item" *ngFor="let item of getNewItems()">
+      <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
+        <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="owner">Owner: {{item.owner}}</div>
 
-      <div class="card board-item card-outline-success mb-3" *ngFor="let item of getNewItems()">
-        <div class="card-header card-inverse card-success" (click)="openDialog(item, false)">{{item.title}}</div>
-        <div class="row">
-          <div class="col-sm-6">
-            <div class="owner">Owner: {{item.owner}}</div>
-          </div>
-          <div class="col-sm-6">
-            <div class="form-group">
-              <select class="form-control status-dropdown" #selectStatus (change)="setStatus(selectStatus.value, item)">
-                <option>{{item.status}}</option>
-                <option [value]='IN_PROGRESS'>{{IN_PROGRESS}}</option>
-                <option>{{IN_REVIEW}}</option>
-                <option>{{DONE}}</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-6">
-            <div>Priority: {{item.priority}}</div>
-          </div>
-          <div class="col-sm-6">
-            <div>Estimate: {{item.estimation}} h</div>
-          </div>
-        </div>
-      </div>
+        <mat-form-field>
+          <mat-select [(value)]="item.status">
+            <mat-option value={{NEW}}>{{NEW}}</mat-option>
+            <mat-option value={{IN_PROGRESS}}>{{IN_PROGRESS}}</mat-option>
+            <mat-option value={{IN_REVIEW}}>{{IN_REVIEW}}</mat-option>
+            <mat-option value={{DONE}}>{{DONE}}</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-    </div>
-  </div>
+        <div>Priority: {{item.priority}}</div>
+        <div>Estimate: {{item.estimation}} h</div>
 
-  <div class="col-md-3">
-    <div class="card card-columns card-outline-success mb-3">
-      <div class="card-header card-inverse card-success">In progress</div>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
 
-      <div class="card board-item card-outline-success mb-3" *ngFor="let item of getInProgressItems()">
-        <div class="card-header card-inverse card-success" (click)="openDialog(item, false)">{{item.title}}</div>
-        <div class="row">
-          <div class="col-sm-6">
-            <div class="owner">Owner: {{item.owner}}</div>
-          </div>
-          <div class="col-sm-6">
-            <div class="form-group">
-              <select class="form-control status-dropdown" #selectStatus (change)="setStatus(selectStatus.value, item)">
-                <option>{{item.status}}</option>
-                <option [value]='NEW'>{{NEW}}</option>
-                <option>{{IN_REVIEW}}</option>
-                <option>{{DONE}}</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-6">
-            <div>Priority: {{item.priority}}</div>
-          </div>
-          <div class="col-sm-6">
-            <div>Estimate: {{item.estimation}} h</div>
-          </div>
-        </div>
-      </div>
+  <mat-grid-tile>
+    <mat-grid-tile-header>
+      In Progress
+    </mat-grid-tile-header>
+    <mat-card class="board-item" *ngFor="let item of getInProgressItems()">
 
-    </div>
-  </div>
+      <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
+        <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="owner">Owner: {{item.owner}}</div>
 
-  <div class="col-md-3">
-    <div class="card card-columns card-outline-success mb-3" droppable>
-      <div class="card-header card-inverse card-success">In review</div>
+        <mat-form-field>
+          <mat-select [(value)]="item.status">
+            <mat-option value={{NEW}}>{{NEW}}</mat-option>
+            <mat-option value={{IN_PROGRESS}}>{{IN_PROGRESS}}</mat-option>
+            <mat-option value={{IN_REVIEW}}>{{IN_REVIEW}}</mat-option>
+            <mat-option value={{DONE}}>{{DONE}}</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <div class="card board-item card-outline-success mb-3" *ngFor="let item of getInReviewItems()">
-        <div class="card-header card-inverse card-success" (click)="openDialog(item, false)">{{item.title}}</div>
-        <div class="row">
-          <div class="col-sm-6">
-            <div class="owner">Owner: {{item.owner}}</div>
-          </div>
-          <div class="col-sm-6">
-            <div class="form-group">
-              <select class="form-control status-dropdown" #selectStatus (change)="setStatus(selectStatus.value, item)">
-                <option>{{item.status}}</option>
-                <option [value]='NEW'>{{NEW}}</option>
-                <option>{{IN_PROGRESS}}</option>
-                <option>{{DONE}}</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-6">
-            <div>Priority: {{item.priority}}</div>
-          </div>
-          <div class="col-sm-6">
-            <div>Estimate: {{item.estimation}} h</div>
-          </div>
-        </div>
-      </div>
+        <div>Priority: {{item.priority}}</div>
+        <div>Estimate: {{item.estimation}} h</div>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
 
-    </div>
-  </div>
+  <mat-grid-tile>
+    <mat-grid-tile-header>
+      In Review
+    </mat-grid-tile-header>
+    <mat-card class="board-item" *ngFor="let item of getInReviewItems()">
+      <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
+        <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="owner">Owner: {{item.owner}}</div>
 
-  <div class="col-md-3">
-    <div class="card card-columns card-outline-success mb-3" droppable>
-      <div class="card-header card-inverse card-success">Done</div>
+        <mat-form-field>
+          <mat-select [(value)]="item.status">
+            <mat-option value={{NEW}}>{{NEW}}</mat-option>
+            <mat-option value={{IN_PROGRESS}}>{{IN_PROGRESS}}</mat-option>
+            <mat-option value={{IN_REVIEW}}>{{IN_REVIEW}}</mat-option>
+            <mat-option value={{DONE}}>{{DONE}}</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <div class="card board-item card-outline-success mb-3" *ngFor="let item of getDoneItems()">
-        <div class="card-header card-inverse card-success" (click)="openDialog(item, false)">{{item.title}}</div>
-        <div class="row">
-          <div class="col-sm-6">
-            <div class="owner">Owner: {{item.owner}}</div>
-          </div>
-          <div class="col-sm-6">
-            <div class="form-group">
-              <select class="form-control status-dropdown" #selectStatus (change)="setStatus(selectStatus.value, item)">
-                <option>{{item.status}}</option>
-                <option [value]='NEW'>{{NEW}}</option>
-                <option>{{IN_PROGRESS}}</option>
-                <option>{{IN_REVIEW}}</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-6">
-            <div>Priority: {{item.priority}}</div>
-          </div>
-          <div class="col-sm-6">
-            <div>Estimate: {{item.estimation}} h</div>
-          </div>
-        </div>
-      </div>
+        <div>Priority: {{item.priority}}</div>
+        <div>Estimate: {{item.estimation}} h</div>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
 
+  <mat-grid-tile>
+    <mat-grid-tile-header>
+      Done
+    </mat-grid-tile-header>
 
-    </div>
-  </div>
-</div>
+    <mat-card class="board-item" *ngFor="let item of getDoneItems()">
+      <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
+        <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="owner">Owner: {{item.owner}}</div>
+
+        <mat-form-field>
+          <mat-select [(value)]="item.status">
+            <mat-option value={{NEW}}>{{NEW}}</mat-option>
+            <mat-option value={{IN_PROGRESS}}>{{IN_PROGRESS}}</mat-option>
+            <mat-option value={{IN_REVIEW}}>{{IN_REVIEW}}</mat-option>
+            <mat-option value={{DONE}}>{{DONE}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div>Priority: {{item.priority}}</div>
+        <div>Estimate: {{item.estimation}} h</div>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
