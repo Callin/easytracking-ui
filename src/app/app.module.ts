@@ -75,7 +75,7 @@ import {CdkTableModule} from '@angular/cdk/table';
     MatTooltipModule,
   ]
 })
-export class DemoMaterialModule {
+export class MaterialModule {
 }
 
 @NgModule({
@@ -90,7 +90,7 @@ export class DemoMaterialModule {
     Ng2DragDropModule.forRoot(),
     FormsModule,
     MatFormFieldModule,
-    DemoMaterialModule,
+    MaterialModule,
     MatInputModule,
     MatDialogModule,
     MatPaginatorModule,
