@@ -35,12 +35,6 @@
   border-right: 1px solid lightslategray;
 }
 
-.board-item-dialog {
-  width: 80%;
-  height: 60%;
-  position: absolute;
-}
-
 .owner {
   margin-top: 25px;
 }
@@ -53,10 +47,4 @@
 
 .board-col-header {
   border-bottom: 2px solid crimson;
-}
-
-.cdk-overlay-container {
-  /* Do you changes here */
-  position: absolute;
-  z-index: 1000;
 }

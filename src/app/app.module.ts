@@ -3,8 +3,8 @@ import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {AppComponent} from './app.component';
-import {BoardComponent, DialogBoardItemComponentDialog} from './board/board.component';
-import {Ng2DragDropModule} from 'ng2-drag-drop';
+import {BoardItemDialogComponent} from './board-item-dialog/board-item-dialog.component';
+import {BoardComponent} from './board/board.component';
 import {
   MatDialogModule, MatFormFieldModule, MatInputModule, MatNativeDateModule,
   MatPaginatorModule,
@@ -82,12 +82,11 @@ export class MaterialModule {
   declarations: [
     AppComponent,
     BoardComponent,
-    DialogBoardItemComponentDialog
+    BoardItemDialogComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    Ng2DragDropModule.forRoot(),
     FormsModule,
     MatFormFieldModule,
     MaterialModule,
@@ -97,7 +96,7 @@ export class MaterialModule {
     MatNativeDateModule,
     ReactiveFormsModule
   ],
-  entryComponents: [DialogBoardItemComponentDialog],
+  entryComponents: [BoardItemDialogComponent],
   providers: [],
   bootstrap: [AppComponent]
 })
