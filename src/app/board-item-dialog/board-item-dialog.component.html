@@ -14,7 +14,7 @@
         <!--<label>Owner: </label>-->
 
           <mat-form-field>
-            <mat-select [(value)]="data.owner" placeholder="Status">
+            <mat-select value="{{data.owner}}" placeholder="Owner">
               <mat-option *ngFor="let user of userList" value={{user}}>{{user}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -28,7 +28,7 @@
 
         <mat-grid-tile>
           <mat-form-field>
-            <mat-select [(value)]="data.status" placeholder="Status">
+            <mat-select value="{{data.status}}" placeholder="Status">
               <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
             </mat-select>
           </mat-form-field>
