@@ -1,15 +1,7 @@
 .board-item {
   height: 200px;
   width: 300px;
-}
-
-.mat-select-board-item {
-  border: 1px solid tomato;
-  width: 60px;
-}
-
-.mat-grid-tile-header .mat-grid-tile {
-  background-color: red;
+  margin-bottom: 20px;
 }
 
 .mat-card-title {

@@ -13,16 +13,18 @@ export class BoardComponent implements OnInit {
   IN_PROGRESS = 'In Progress';
   IN_REVIEW = 'In Review';
   DONE = 'Done';
+  statusList = [this.NEW, this.IN_PROGRESS, this.IN_REVIEW, this.DONE];
+  userList = ['Dragos', 'David', 'Bogdan', 'Johny'];
 
   userStoryList = [
     new UserStory('Create Data Layer for User', 'Dragos', 2, 2, 'story',
-      'Entities need to be created along with the methods for CRUD operations', this.NEW),
+      'Entities need to be created along with the methods for CRUD operations', 'New'),
     new UserStory('Create Business Layer for User', 'Johny', 2, 2, 'story',
-      'Create DTOs, business methods for CRUD operations', this.IN_PROGRESS),
+      'Create DTOs, business methods for CRUD operations', 'In Progress'),
     new UserStory('Create View Layer for User', 'Johny', 2, 2, 'story',
-      'Create DTOs, business methods for CRUD operations', this.IN_REVIEW),
+      'Create DTOs, business methods for CRUD operations', 'In Review'),
     new UserStory('Create Infrastructure Layer for User', 'Johny', 2, 2, 'story',
-      'Create DTOs, business methods for CRUD operations', this.DONE)];
+      'Create DTOs, business methods for CRUD operations', 'Done')];
 
   constructor(public dialog: MatDialog) {
   }

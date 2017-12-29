@@ -5,33 +5,40 @@
 
   <div mat-dialog-content>
     <mat-form-field class="text-input-full-width">
-      <textarea matInput class="board-item-textarea-description" placeholder='Description' value={{data.description}}></textarea>
+      <textarea matInput class="board-item-textarea-description" placeholder='Description'
+                value={{data.description}}></textarea>
     </mat-form-field>
 
     <mat-grid-list cols="2" rowHeight="11:1">
       <mat-grid-tile>
         <!--<label>Owner: </label>-->
-        <mat-form-field>
-          <input matInput placeholder='Owner' value={{data.owner}}>
-        </mat-form-field>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <mat-form-field>
-          <input matInput placeholder='Priority' value={{data.priority}}>
-        </mat-form-field>
-      </mat-grid-tile>
 
-      <mat-grid-tile>
-        <mat-form-field>
-          <input matInput placeholder='Status' value={{data.status}}>
-        </mat-form-field>
-      </mat-grid-tile>
+          <mat-form-field>
+            <mat-select [(value)]="data.owner" placeholder="Status">
+              <mat-option *ngFor="let user of userList" value={{user}}>{{user}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
 
-      <mat-grid-tile>
-        <mat-form-field>
-          <input matInput placeholder='Estimation' value={{data.estimation}}>
-        </mat-form-field>
-      </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder='Priority' value={{data.priority}}>
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <mat-select [(value)]="data.status" placeholder="Status">
+              <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput placeholder='Estimation' value={{data.estimation}}>
+          </mat-form-field>
+        </mat-grid-tile>
     </mat-grid-list>
   </div>
 

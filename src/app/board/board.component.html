@@ -1,137 +1,105 @@
 <p (click)="openDialog(getNewItems().pop(), false)">dsdad</p>
 <mat-grid-list cols="5">
-  <mat-grid-tile>
-    <mat-grid-tile-header>
-      User Stories
-    </mat-grid-tile-header>
-    <mat-card class="board-item" *ngFor="let item of getNewItems()">
-      <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
-        <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
 
-        <div class="owner">Owner: {{item.owner}}</div>
-
-        <mat-form-field>
-          <mat-select [(value)]="item.status">
-            <mat-option value={{NEW}}>{{NEW}}</mat-option>
-            <mat-option value={{IN_PROGRESS}}>{{IN_PROGRESS}}</mat-option>
-            <mat-option value={{IN_REVIEW}}>{{IN_REVIEW}}</mat-option>
-            <mat-option value={{DONE}}>{{DONE}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-
-        <div>Priority: {{item.priority}}</div>
-        <div>Estimate: {{item.estimation}} h</div>
-      </mat-card-content>
-    </mat-card>
-  </mat-grid-tile>
-
-  <mat-grid-tile>
+  <mat-grid-tile colspan="1" rowspan="1">
     <mat-grid-tile-header>
       New
     </mat-grid-tile-header>
-    <mat-card class="board-item" *ngFor="let item of getNewItems()">
-      <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
-        <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="owner">Owner: {{item.owner}}</div>
+    <!--<div>-->
+      <mat-card class="board-item" *ngFor="let item of getNewItems()">
+        <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
+          <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="owner">Owner: {{item.owner}}</div>
 
-        <mat-form-field>
-          <mat-select [(value)]="item.status">
-            <mat-option value={{NEW}}>{{NEW}}</mat-option>
-            <mat-option value={{IN_PROGRESS}}>{{IN_PROGRESS}}</mat-option>
-            <mat-option value={{IN_REVIEW}}>{{IN_REVIEW}}</mat-option>
-            <mat-option value={{DONE}}>{{DONE}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field>
+            <mat-select [(value)]="item.status">
+              <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <div>Priority: {{item.priority}}</div>
-        <div>Estimate: {{item.estimation}} h</div>
+          <div>Priority: {{item.priority}}</div>
+          <div>Estimate: {{item.estimation}} h</div>
 
-      </mat-card-content>
-    </mat-card>
+        </mat-card-content>
+      </mat-card>
+    <!--</div>-->
   </mat-grid-tile>
 
   <mat-grid-tile>
     <mat-grid-tile-header>
       In Progress
     </mat-grid-tile-header>
-    <mat-card class="board-item" *ngFor="let item of getInProgressItems()">
+    <div>
+      <mat-card class="board-item" *ngFor="let item of getInProgressItems()">
 
-      <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
-        <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="owner">Owner: {{item.owner}}</div>
+        <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
+          <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="owner">Owner: {{item.owner}}</div>
 
-        <mat-form-field>
-          <mat-select [(value)]="item.status">
-            <mat-option value={{NEW}}>{{NEW}}</mat-option>
-            <mat-option value={{IN_PROGRESS}}>{{IN_PROGRESS}}</mat-option>
-            <mat-option value={{IN_REVIEW}}>{{IN_REVIEW}}</mat-option>
-            <mat-option value={{DONE}}>{{DONE}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field>
+            <mat-select [(value)]="item.status">
+              <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <div>Priority: {{item.priority}}</div>
-        <div>Estimate: {{item.estimation}} h</div>
-      </mat-card-content>
-    </mat-card>
+          <div>Priority: {{item.priority}}</div>
+          <div>Estimate: {{item.estimation}} h</div>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </mat-grid-tile>
 
   <mat-grid-tile>
     <mat-grid-tile-header>
       In Review
     </mat-grid-tile-header>
-    <mat-card class="board-item" *ngFor="let item of getInReviewItems()">
-      <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
-        <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="owner">Owner: {{item.owner}}</div>
+    <div>
+      <mat-card class="board-item" *ngFor="let item of getInReviewItems()">
+        <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
+          <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="owner">Owner: {{item.owner}}</div>
 
-        <mat-form-field>
-          <mat-select [(value)]="item.status">
-            <mat-option value={{NEW}}>{{NEW}}</mat-option>
-            <mat-option value={{IN_PROGRESS}}>{{IN_PROGRESS}}</mat-option>
-            <mat-option value={{IN_REVIEW}}>{{IN_REVIEW}}</mat-option>
-            <mat-option value={{DONE}}>{{DONE}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field>
+            <mat-select [(value)]="item.status">
+              <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <div>Priority: {{item.priority}}</div>
-        <div>Estimate: {{item.estimation}} h</div>
-      </mat-card-content>
-    </mat-card>
+          <div>Priority: {{item.priority}}</div>
+          <div>Estimate: {{item.estimation}} h</div>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </mat-grid-tile>
 
   <mat-grid-tile>
     <mat-grid-tile-header>
       Done
     </mat-grid-tile-header>
+    <div>
+      <mat-card class="board-item" *ngFor="let item of getDoneItems()">
+        <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
+          <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="owner">Owner: {{item.owner}}</div>
 
-    <mat-card class="board-item" *ngFor="let item of getDoneItems()">
-      <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
-        <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="owner">Owner: {{item.owner}}</div>
+          <mat-form-field>
+            <mat-select [(value)]="item.status">
+              <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <mat-form-field>
-          <mat-select [(value)]="item.status">
-            <mat-option value={{NEW}}>{{NEW}}</mat-option>
-            <mat-option value={{IN_PROGRESS}}>{{IN_PROGRESS}}</mat-option>
-            <mat-option value={{IN_REVIEW}}>{{IN_REVIEW}}</mat-option>
-            <mat-option value={{DONE}}>{{DONE}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <div>Priority: {{item.priority}}</div>
-        <div>Estimate: {{item.estimation}} h</div>
-      </mat-card-content>
-    </mat-card>
+          <div>Priority: {{item.priority}}</div>
+          <div>Estimate: {{item.estimation}} h</div>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </mat-grid-tile>
 </mat-grid-list>
