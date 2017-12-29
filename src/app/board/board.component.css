@@ -4,39 +4,28 @@
   margin-bottom: 20px;
 }
 
+.board-item-title {
+  background-color: #ffd740; /*khaki;*/
+}
+
 .mat-card-title {
   margin-bottom: 10px;
   margin-top: 10px;
 }
 
-
-.board-item-title {
-  background-color: khaki;
-  /*border: 1px solid tomato;*/
-  /*width: 60px;*/
+.board-column {
+  border-right: solid 2px black;
 }
 
 .board-column-header {
-  background-color: khaki;
-  /*border: 1px solid tomato;*/
-  /*width: 60px;*/
-}
-
-.mat-grid-tile-border {
-  min-height: 800px;
-  border-right: 1px solid lightslategray;
+  background-color: #f4ff81;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .owner {
   padding-top: 10px;
-}
-
-.status-dropdown {
-  margin-top: 20px;
-  width: 115px !important;
-  height: 33px !important;
-}
-
-.board-col-header {
-  border-bottom: 2px solid crimson;
 }

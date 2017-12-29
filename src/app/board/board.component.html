@@ -1,11 +1,11 @@
-<p (click)="openDialog(getNewItems().pop(), false)">dsdad</p>
-<mat-grid-list cols="5">
+<!--<div cols="5" rowHeight="1:2">-->
 
-  <mat-grid-tile colspan="1" rowspan="1">
-    <mat-grid-tile-header>
+<div class="row">
+  <div class="col-md-3 board-column">
+    <div class="board-column-header">
       New
-    </mat-grid-tile-header>
-    <!--<div>-->
+    </div>
+    <div>
       <mat-card class="board-item" *ngFor="let item of getNewItems()">
         <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
           <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
@@ -24,13 +24,13 @@
 
         </mat-card-content>
       </mat-card>
-    <!--</div>-->
-  </mat-grid-tile>
+    </div>
+  </div>
 
-  <mat-grid-tile>
-    <mat-grid-tile-header>
+  <div class="col-md-3 board-column">
+    <div class="board-column-header">
       In Progress
-    </mat-grid-tile-header>
+    </div>
     <div>
       <mat-card class="board-item" *ngFor="let item of getInProgressItems()">
 
@@ -51,12 +51,12 @@
         </mat-card-content>
       </mat-card>
     </div>
-  </mat-grid-tile>
+  </div>
 
-  <mat-grid-tile>
-    <mat-grid-tile-header>
+  <div class="col-md-3 board-column">
+    <div class="board-column-header">
       In Review
-    </mat-grid-tile-header>
+    </div>
     <div>
       <mat-card class="board-item" *ngFor="let item of getInReviewItems()">
         <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
@@ -76,12 +76,12 @@
         </mat-card-content>
       </mat-card>
     </div>
-  </mat-grid-tile>
+  </div>
 
-  <mat-grid-tile>
-    <mat-grid-tile-header>
+  <div class="col-md-3 board-column">
+    <div class="board-column-header">
       Done
-    </mat-grid-tile-header>
+    </div>
     <div>
       <mat-card class="board-item" *ngFor="let item of getDoneItems()">
         <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
@@ -101,5 +101,5 @@
         </mat-card-content>
       </mat-card>
     </div>
-  </mat-grid-tile>
-</mat-grid-list>
+  </div>
+</div>
