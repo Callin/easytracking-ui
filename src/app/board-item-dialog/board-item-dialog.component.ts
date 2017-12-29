@@ -39,4 +39,9 @@ export class BoardItemDialogComponent implements OnInit {
     return this.userList.filter(user =>
       user.toLowerCase().indexOf(val.toLowerCase()) === 0);
   }
+
+  onNoClick(): void {
+    console.log('No data was changed');
+    this.dialogRef.close();
+  }
 }

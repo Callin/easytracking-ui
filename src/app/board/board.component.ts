@@ -32,11 +32,6 @@ export class BoardComponent implements OnInit {
   ngOnInit() {
   }
 
-
-  setStatus(newStatus: string, item: UserStory) {
-    item.status = newStatus;
-  }
-
   getNewItems() {
     return this.userStoryList.filter(item => item.status === this.NEW);
   }
@@ -53,10 +48,6 @@ export class BoardComponent implements OnInit {
     return this.userStoryList.filter(item => item.status === this.DONE);
   }
 
-  public showDetails(item: UserStory) {
-    // this.modalService.open('text');
-  }
-
   openDialog(item: UserStory, isNew: boolean): void {
     if (isNew) {
       // show dummy, predefined data
@@ -69,9 +60,10 @@ export class BoardComponent implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed');
+        if (result != null) {
+          console.log('The dialog was closed. Status: ' + result.status + ' owner: ' + result.owner);
+        }
       });
     }
   }
-
 }
