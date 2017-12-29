@@ -1,37 +1,38 @@
-<div >
-  <h1 mat-dialog-title>{{data.title}}</h1>
+<div>
+  <mat-form-field class="text-input-full-width">
+    <input matInput placeholder="Title" value={{data.title}}>
+  </mat-form-field>
 
-  <div  mat-dialog-content>
+  <div mat-dialog-content>
+    <mat-form-field class="text-input-full-width">
+      <textarea matInput class="board-item-textarea-description" placeholder='Description' value={{data.description}}></textarea>
+    </mat-form-field>
 
-    <div class="row">
-      <!--<label>Description: </label>-->
-      <mat-form-field>
-        <textarea matInput placeholder='Description' value={{data.description}}></textarea>
-      </mat-form-field>
-    </div>
+    <mat-grid-list cols="2" rowHeight="11:1">
+      <mat-grid-tile>
+        <!--<label>Owner: </label>-->
+        <mat-form-field>
+          <input matInput placeholder='Owner' value={{data.owner}}>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <input matInput placeholder='Priority' value={{data.priority}}>
+        </mat-form-field>
+      </mat-grid-tile>
 
-    <div class="row">
-      <!--<label>Owner: </label>-->
-      <mat-form-field>
-        <input matInput placeholder='Owner' value={{data.owner}}>
-      </mat-form-field>
-      <!--<label>Priority: </label>-->
-      <mat-form-field>
-        <input matInput placeholder='Priority' value={{data.priority}}>
-      </mat-form-field>
-    </div>
+      <mat-grid-tile>
+        <mat-form-field>
+          <input matInput placeholder='Status' value={{data.status}}>
+        </mat-form-field>
+      </mat-grid-tile>
 
-    <div class="row">
-      <!--<label>Priority: </label>-->
-      <mat-form-field>
-        <input matInput placeholder='Status' value={{data.status}}>
-      </mat-form-field>
-
-      <!--<label>Estimation: </label>-->
-      <mat-form-field>
-        <input matInput placeholder='Estimation' value={{data.estimation}}>
-      </mat-form-field>
-    </div>
+      <mat-grid-tile>
+        <mat-form-field>
+          <input matInput placeholder='Estimation' value={{data.estimation}}>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
   </div>
 
   <div mat-dialog-actions>
