@@ -5,7 +5,11 @@
 }
 
 .board-item-title {
-  background-color: #ffd740; /*khaki;*/
+  background-color: #ffd740;
+}
+
+.board-add-new-item{
+  text-align: right;
 }
 
 .mat-card-title {
@@ -18,7 +22,7 @@
 }
 
 .board-column-header {
-  background-color: #f4ff81;
+  background-color: #9fbc84;
   height: 50px;
   text-align: center;
   line-height: 50px;

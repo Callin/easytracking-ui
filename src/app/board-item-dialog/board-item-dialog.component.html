@@ -1,18 +1,18 @@
 <div>
   <mat-form-field class='text-input-full-width'>
-    <input matInput placeholder='Title' value={{data.title}}>
+    <input matInput placeholder='Title'  [(ngModel)]='data.itemClone.title'>
   </mat-form-field>
 
   <div mat-dialog-content>
     <mat-form-field class='text-input-full-width'>
       <textarea matInput class='board-item-textarea-description' placeholder='Description'
-        value={{data.description}}></textarea>
+                [(ngModel)]='data.itemClone.description'></textarea>
     </mat-form-field>
 
     <mat-grid-list cols='2' rowHeight='11:1'>
       <mat-grid-tile>
           <mat-form-field>
-            <mat-select value={{data.owner}} placeholder='Owner'>
+            <mat-select placeholder='Owner' [(ngModel)]='data.itemClone.owner'>
               <mat-option *ngFor='let user of userList' value={{user}}>{{user}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -20,13 +20,13 @@
 
         <mat-grid-tile>
           <mat-form-field>
-            <input matInput placeholder='Priority' value={{data.priority}}>
+            <input matInput placeholder='Priority' [(ngModel)]='data.itemClone.priority'>
           </mat-form-field>
         </mat-grid-tile>
 
         <mat-grid-tile>
           <mat-form-field>
-            <mat-select value={{data.status}} placeholder='Status'>
+            <mat-select placeholder='Status' [(ngModel)]='data.itemClone.status'>
               <mat-option *ngFor='let status of statusList' value={{status}}>{{status}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -34,7 +34,7 @@
 
         <mat-grid-tile>
           <mat-form-field>
-            <input matInput placeholder='Estimation' value={{data.estimation}}>
+            <input matInput placeholder='Estimation' [(ngModel)]='data.itemClone.estimation'>
           </mat-form-field>
         </mat-grid-tile>
     </mat-grid-list>
@@ -42,6 +42,6 @@
 
   <div mat-dialog-actions>
     <button mat-button (click)='onNoClick()'>Cancel</button>
-    <button mat-button [mat-dialog-close]='data' cdkFocusInitial>Save</button>
+    <button mat-button [mat-dialog-close]='data.itemClone' cdkFocusInitial>Save</button>
   </div>
 </div>
