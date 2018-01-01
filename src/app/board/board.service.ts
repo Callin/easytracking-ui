@@ -6,7 +6,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable()
 export class BoardService {
-  serverUrl = 'http://localhost:8100/userstory';
+  serverUrl = 'http://localhost:4200/userstory';
 
   constructor(private httpClient: HttpClient) {
 
@@ -18,6 +18,11 @@ export class BoardService {
       .map(
         (userStoryResponse) => {
           return userStoryResponse;
+        }
+      )
+      .catch(
+        (error: Response) => {
+          return Observable.throw(error);
         }
       );
   }

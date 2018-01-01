@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {UserStory} from './dto/user-story';
 import {BoardItemDialogComponent} from '../board-item-dialog/board-item-dialog.component';
 import {MatDialog} from '@angular/material';
@@ -7,7 +7,7 @@ import {BoardService} from './board.service';
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
-  styleUrls: ['./board.component.css']
+  styleUrls: ['./board.component.css'],
 })
 export class BoardComponent implements OnInit {
   NEW = 'New';
@@ -19,15 +19,16 @@ export class BoardComponent implements OnInit {
 
   userStoryList = [
     new UserStory('Create Data Layer for User', 'Dragos', 2, 2,
-      'Entities need to be created along with the methods for CRUD operations', 'New'),
+      'Entities need to be created along with the methods for CRUD operations', 'New', 1),
     new UserStory('Create Business Layer for User', 'Johny', 2, 2,
-      'Create DTOs, business methods for CRUD operations', 'In Progress'),
+      'Create DTOs, business methods for CRUD operations', 'In Progress', 1),
     new UserStory('Create View Layer for User', 'Johny', 2, 2,
-      'Create DTOs, business methods for CRUD operations', 'In Review'),
+      'Create DTOs, business methods for CRUD operations', 'In Review', 1),
     new UserStory('Create Infrastructure Layer for User', 'Johny', 2, 2,
-      'Create DTOs, business methods for CRUD operations', 'Done')];
+      'Create DTOs, business methods for CRUD operations', 'Done', 1)];
 
-  constructor(public dialog: MatDialog, private boardService: BoardService) {
+  constructor(public dialog: MatDialog,
+              private boardService: BoardService) {
   }
 
   ngOnInit() {
@@ -72,12 +73,11 @@ export class BoardComponent implements OnInit {
             '\nestimation: ' + result.boardItem.estimation
           );
 
-          this.userStoryList.push(result.boardItem);
+          this.onCreateUserStory(result.boardItem);
         }
       });
     } else {
       // user wants to open an existing story
-      console.log('Inside else');
       const boardItem = this.cloneUserStory(item);
       const dialogRef = this.dialog.open(BoardItemDialogComponent, {
         width: '80%',
@@ -86,11 +86,9 @@ export class BoardComponent implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        console.log('Updateting...');
         if (result != null) {
           // update data
           // existing item being updated
-          console.log('Title: ' + result.boardItem.title);
           this.copyUserStory(item, result.boardItem);
         }
       });
@@ -100,7 +98,12 @@ export class BoardComponent implements OnInit {
   onCreateUserStory(userStory: UserStory) {
     this.boardService.createUserStory(userStory)
       .subscribe(
-        (response) => console.log(response),
+        (response) => {
+          console.log('Response after create: ' + response.title);
+          console.log('userStory list size before: ' + this.userStoryList.length);
+          this.userStoryList.push(response);
+          console.log('userStory list size after: ' + this.userStoryList.length);
+        },
         (error) => console.log(error)
       );
   }
@@ -124,7 +127,7 @@ export class BoardComponent implements OnInit {
 
   cloneUserStory(userStory: UserStory): UserStory {
     const copy: UserStory = new UserStory(userStory.title, userStory.owner, userStory.priority,
-      userStory.estimation, userStory.description, userStory.status);
+      userStory.estimation, userStory.description, userStory.status, userStory.projectId);
 
     return copy;
   }
@@ -136,6 +139,7 @@ export class BoardComponent implements OnInit {
     item.priority = clone.priority;
     item.title = clone.title;
     item.owner = clone.owner;
+    item.projectId = clone.projectId;
   }
 
   getBlankItemTemplate(): UserStory {
@@ -145,6 +149,7 @@ export class BoardComponent implements OnInit {
       0,
       0,
       'Replace with a comprehensive description',
-      this.NEW);
+      this.NEW,
+      1);
   }
 }
