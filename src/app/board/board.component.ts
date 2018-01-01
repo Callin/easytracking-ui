@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserStory} from './dto/user-story';
 import {BoardItemDialogComponent} from '../board-item-dialog/board-item-dialog.component';
 import {MatDialog} from '@angular/material';
@@ -17,37 +17,30 @@ export class BoardComponent implements OnInit {
   statusList = [this.NEW, this.IN_PROGRESS, this.IN_REVIEW, this.DONE];
   userList = ['Dragos', 'David', 'Bogdan', 'Johny'];
 
-  userStoryList = [
-    new UserStory('Create Data Layer for User', 'Dragos', 2, 2,
-      'Entities need to be created along with the methods for CRUD operations', 'New', 1),
-    new UserStory('Create Business Layer for User', 'Johny', 2, 2,
-      'Create DTOs, business methods for CRUD operations', 'In Progress', 1),
-    new UserStory('Create View Layer for User', 'Johny', 2, 2,
-      'Create DTOs, business methods for CRUD operations', 'In Review', 1),
-    new UserStory('Create Infrastructure Layer for User', 'Johny', 2, 2,
-      'Create DTOs, business methods for CRUD operations', 'Done', 1)];
+  allUserStories: UserStory[];
 
   constructor(public dialog: MatDialog,
               private boardService: BoardService) {
   }
 
   ngOnInit() {
+    this.onGetUserStories();
   }
 
   getNewItems() {
-    return this.userStoryList.filter(item => item.status === this.NEW);
+    return this.allUserStories.filter(item => item.status === this.NEW);
   }
 
   getInProgressItems() {
-    return this.userStoryList.filter(item => item.status === this.IN_PROGRESS);
+    return this.allUserStories.filter(item => item.status === this.IN_PROGRESS);
   }
 
   getInReviewItems() {
-    return this.userStoryList.filter(item => item.status === this.IN_REVIEW);
+    return this.allUserStories.filter(item => item.status === this.IN_REVIEW);
   }
 
   getDoneItems() {
-    return this.userStoryList.filter(item => item.status === this.DONE);
+    return this.allUserStories.filter(item => item.status === this.DONE);
   }
 
   openDialog(item: UserStory, isNew: boolean): void {
@@ -90,6 +83,7 @@ export class BoardComponent implements OnInit {
           // update data
           // existing item being updated
           this.copyUserStory(item, result.boardItem);
+          this.onUpdateUserStory(item);
         }
       });
     }
@@ -99,10 +93,7 @@ export class BoardComponent implements OnInit {
     this.boardService.createUserStory(userStory)
       .subscribe(
         (response) => {
-          console.log('Response after create: ' + response.title);
-          console.log('userStory list size before: ' + this.userStoryList.length);
-          this.userStoryList.push(response);
-          console.log('userStory list size after: ' + this.userStoryList.length);
+          this.allUserStories.push(response);
         },
         (error) => console.log(error)
       );
@@ -111,18 +102,22 @@ export class BoardComponent implements OnInit {
   onUpdateUserStory(userStory: UserStory) {
     this.boardService.updateUserStory(userStory)
       .subscribe(
-        (updatedUserStory: any) => console.log(updatedUserStory),
+        (updatedUserStory: any) => {
+          console.log('User story with id: ' + userStory.id + ' has been updated ');
+        },
         (error) => console.log(error)
       );
   }
 
-  onGetUserStory() {
-    this.boardService.getUserStories().subscribe(
-      (response: Response) => {
-        const data = response.json();
-      },
-      (error) => console.log(error)
-    );
+  onGetUserStories() {
+    return this.boardService.getUserStories()
+      .subscribe(
+        (userStoryList) => {
+          console.log('User story list size: ' + userStoryList.length);
+          this.allUserStories = userStoryList;
+        },
+        (error) => console.log(error)
+      );
   }
 
   cloneUserStory(userStory: UserStory): UserStory {
@@ -151,5 +146,9 @@ export class BoardComponent implements OnInit {
       'Replace with a comprehensive description',
       this.NEW,
       1);
+  }
+
+  onStatusChange(item: UserStory) {
+    this.onUpdateUserStory(item);
   }
 }

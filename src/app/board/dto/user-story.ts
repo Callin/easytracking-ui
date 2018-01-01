@@ -1,4 +1,5 @@
 export class UserStory {
+  id: number;
   title: string;
   description: string;
   owner: string;

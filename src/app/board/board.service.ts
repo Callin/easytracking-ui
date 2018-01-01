@@ -6,7 +6,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable()
 export class BoardService {
-  serverUrl = 'http://localhost:4200/userstory';
+  serverUrl = 'http://localhost:4200';
 
   constructor(private httpClient: HttpClient) {
 
@@ -14,7 +14,7 @@ export class BoardService {
 
   createUserStory(userStory: UserStory) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.post<UserStory>(this.serverUrl, userStory, {headers: header})
+    return this.httpClient.post<UserStory>(this.serverUrl + '/userstory', userStory, {headers: header})
       .map(
         (userStoryResponse) => {
           return userStoryResponse;
@@ -29,7 +29,7 @@ export class BoardService {
 
   updateUserStory(userStory: UserStory) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.put<UserStory>(this.serverUrl, userStory, {headers: header})
+    return this.httpClient.put<UserStory>(this.serverUrl + '/userstory', userStory, {headers: header})
       .map(
         (userStoryResponse) => {
           return userStoryResponse;
@@ -39,7 +39,7 @@ export class BoardService {
 
   getUserStories() {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.get<UserStory[]>(this.serverUrl, {headers: header})
+    return this.httpClient.get<UserStory[]>(this.serverUrl + '/userstory/project/1', {headers: header})
       .map(
         (userStoryList) => {
           return userStoryList;
