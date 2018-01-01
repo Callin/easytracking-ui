@@ -2,32 +2,34 @@
 
 
 <div class="row">
-  <div class="col-md-3 board-column">
+  <div class="col-sm-3 board-column">
     <div class="board-column-header">
       New
     </div>
-    <div class="board-add-new-item">
-      <div><i class="material-icons">add_box</i></div>
-    </div>
-    <div>
-      <mat-card class="board-item" *ngFor="let item of getNewItems()">
-        <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
-          <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="owner">Owner: {{item.owner}}</div>
+    <div class="wrapper-div">
+      <div class="board-add-new-item div-one">
+        <i class="material-icons" (click)="openDialog(null, true)">add_box</i>
+      </div>
+      <div class="div-two">
+        <mat-card class="board-item" *ngFor="let item of getNewItems()">
+          <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
+            <mat-card-title>{{(item.title.length>25)? (item.title | slice:0:25)+'...':(item.title)}}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="owner">Owner: {{item.owner}}</div>
 
-          <mat-form-field>
-            <mat-select [(value)]="item.status">
-              <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
-            </mat-select>
-          </mat-form-field>
+            <mat-form-field>
+              <mat-select [(value)]="item.status">
+                <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
+              </mat-select>
+            </mat-form-field>
 
-          <div>Priority: {{item.priority}}</div>
-          <div>Estimate: {{item.estimation}} h</div>
+            <div>Priority: {{item.priority}}</div>
+            <div>Estimate: {{item.estimation}} h</div>
 
-        </mat-card-content>
-      </mat-card>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
   </div>
 
@@ -39,7 +41,7 @@
       <mat-card class="board-item" *ngFor="let item of getInProgressItems()">
 
         <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
-          <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
+          <mat-card-title>{{(item.title.length>25)? (item.title | slice:0:25)+'...':(item.title)}}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <div class="owner">Owner: {{item.owner}}</div>
@@ -64,7 +66,7 @@
     <div>
       <mat-card class="board-item" *ngFor="let item of getInReviewItems()">
         <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
-          <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
+          <mat-card-title>{{(item.title.length>25)? (item.title | slice:0:25)+'...':(item.title)}}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <div class="owner">Owner: {{item.owner}}</div>
@@ -89,7 +91,7 @@
     <div>
       <mat-card class="board-item" *ngFor="let item of getDoneItems()">
         <mat-card-header class="board-item-title" (click)="openDialog(item, false)">
-          <mat-card-title>{{(item.title.length>6)? (item.title | slice:0:30)+'...':(item.title)}}</mat-card-title>
+          <mat-card-title>{{(item.title.length>25)? (item.title | slice:0:25)+'...':(item.title)}}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <div class="owner">Owner: {{item.owner}}</div>

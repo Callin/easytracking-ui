@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {UserStory} from './dto/user-story';
 import {BoardItemDialogComponent} from '../board-item-dialog/board-item-dialog.component';
 import {MatDialog} from '@angular/material';
+import {BoardService} from './board.service';
 
 @Component({
   selector: 'app-board',
@@ -26,7 +27,7 @@ export class BoardComponent implements OnInit {
     new UserStory('Create Infrastructure Layer for User', 'Johny', 2, 2,
       'Create DTOs, business methods for CRUD operations', 'Done')];
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, private boardService: BoardService) {
   }
 
   ngOnInit() {
@@ -49,32 +50,76 @@ export class BoardComponent implements OnInit {
   }
 
   openDialog(item: UserStory, isNew: boolean): void {
+    console.log('Is new: ' + isNew);
     if (isNew) {
-      // show dummy, predefined data
-    } else {
-      // user wants to open an existing story
-      const itemClone = this.cloneUserStory(item);
+      // show predefined data
+      const boardItem = this.getBlankItemTemplate();
       const dialogRef = this.dialog.open(BoardItemDialogComponent, {
         width: '80%',
         height: '60%',
-        data: {itemClone}
+        data: {boardItem}
       });
 
       dialogRef.afterClosed().subscribe(result => {
+        console.log('saving...');
         if (result != null) {
-          this.copyUserStory(item, result);
-          console.log('Result: Status: ' + result.status
-            + ' owner: ' + result.owner
-            + ' priority: ' + result.priority
-            + ' estimation: ' + result.estimation);
+          // save data
+          console.log('New data:' +
+            '\ntitle: ' + result.boardItem.title +
+            '\ndescription: ' + result.boardItem.description +
+            '\nowner: ' + result.boardItem.owner +
+            '\nstatus: ' + result.boardItem.status +
+            '\nestimation: ' + result.boardItem.estimation
+          );
 
-          console.log('Item: Status: ' + result.status
-            + ' owner: ' + result.owner
-            + ' priority: ' + result.priority
-            + ' estimation: ' + result.estimation);
+          this.userStoryList.push(result.boardItem);
+        }
+      });
+    } else {
+      // user wants to open an existing story
+      console.log('Inside else');
+      const boardItem = this.cloneUserStory(item);
+      const dialogRef = this.dialog.open(BoardItemDialogComponent, {
+        width: '80%',
+        height: '60%',
+        data: {boardItem}
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('Updateting...');
+        if (result != null) {
+          // update data
+          // existing item being updated
+          console.log('Title: ' + result.boardItem.title);
+          this.copyUserStory(item, result.boardItem);
         }
       });
     }
+  }
+
+  onCreateUserStory(userStory: UserStory) {
+    this.boardService.createUserStory(userStory)
+      .subscribe(
+        (response) => console.log(response),
+        (error) => console.log(error)
+      );
+  }
+
+  onUpdateUserStory(userStory: UserStory) {
+    this.boardService.updateUserStory(userStory)
+      .subscribe(
+        (updatedUserStory: any) => console.log(updatedUserStory),
+        (error) => console.log(error)
+      );
+  }
+
+  onGetUserStory() {
+    this.boardService.getUserStories().subscribe(
+      (response: Response) => {
+        const data = response.json();
+      },
+      (error) => console.log(error)
+    );
   }
 
   cloneUserStory(userStory: UserStory): UserStory {
@@ -91,5 +136,15 @@ export class BoardComponent implements OnInit {
     item.priority = clone.priority;
     item.title = clone.title;
     item.owner = clone.owner;
+  }
+
+  getBlankItemTemplate(): UserStory {
+    return new UserStory(
+      'Replace with a suggestive title',
+      '',
+      0,
+      0,
+      'Replace with a comprehensive description',
+      this.NEW);
   }
 }

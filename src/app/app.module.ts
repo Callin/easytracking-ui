@@ -38,6 +38,8 @@ import {
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CdkTableModule} from '@angular/cdk/table';
+import {BoardService} from './board/board.service';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -89,6 +91,7 @@ export class MaterialModule {
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    HttpClientModule,
     MatFormFieldModule,
     MaterialModule,
     MatInputModule,
@@ -98,7 +101,7 @@ export class MaterialModule {
     ReactiveFormsModule
   ],
   entryComponents: [BoardItemDialogComponent],
-  providers: [],
+  providers: [BoardService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

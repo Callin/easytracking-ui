@@ -1,4 +1,4 @@
-export class UserStory{
+export class UserStory {
   title: string;
   description: string;
   owner: string;

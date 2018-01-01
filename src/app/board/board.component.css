@@ -1,6 +1,6 @@
 .board-item {
   height: 200px;
-  width: 300px;
+  width: 260px;
   margin-bottom: 20px;
 }
 
@@ -8,13 +8,26 @@
   background-color: #ffd740;
 }
 
-.board-add-new-item{
+.board-add-new-item {
   text-align: right;
 }
 
 .mat-card-title {
   margin-bottom: 10px;
   margin-top: 10px;
+}
+
+.mat-card-header {
+}
+
+.mat-card {
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-bottom: 0px;
+}
+
+.mat-card-content {
+  padding-bottom: 24px;
 }
 
 .board-column {
@@ -32,4 +45,17 @@
 
 .owner {
   padding-top: 10px;
+}
+
+/*---- two divs side-by-side*/
+.wrapper-div {
+  width: 100%;
+}
+
+.div-one {
+  margin-left: 1px;
+  float: right;
+}
+
+.div-two {
 }
