@@ -51,4 +51,18 @@ export class BoardService {
         }
       );
   }
+
+  deleteUserStory(userStoryId: number) {
+    return this.httpClient.delete(this.serverUrl + '/api/userstory/' + userStoryId)
+      .map(
+        (response) => {
+          return response;
+        }
+      )
+      .catch(
+        (error: Response) => {
+          return Observable.throw(error);
+        }
+      );
+  }
 }

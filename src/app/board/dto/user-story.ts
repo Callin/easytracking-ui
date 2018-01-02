@@ -8,13 +8,15 @@ export class UserStory {
   estimation: number;
   projectId: number;
 
-  constructor(title: string,
+  constructor(id: number,
+              title: string,
               owner: string,
               priority: number,
               estimation: number,
               description: string,
               status: string,
               projectId: number) {
+    this.id = id;
     this.title = title;
     this.owner = owner;
     this.priority = priority;

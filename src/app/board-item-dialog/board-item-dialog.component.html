@@ -1,6 +1,6 @@
 <div class="display-container">
   <mat-form-field class='text-input-full-width'>
-    <input matInput placeholder='Title'  [(ngModel)]='data.boardItem.title'>
+    <input matInput placeholder='Title' [(ngModel)]='data.boardItem.title'>
   </mat-form-field>
 
   <div mat-dialog-content>
@@ -11,37 +11,43 @@
 
     <mat-grid-list cols='2' rowHeight='11:1'>
       <mat-grid-tile>
-          <mat-form-field class="text-input-half-width">
-            <mat-select placeholder='Owner' [(ngModel)]='data.boardItem.owner'>
-              <mat-option *ngFor='let user of userList' value={{user}}>{{user}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </mat-grid-tile>
+        <mat-form-field class="text-input-half-width">
+          <mat-select placeholder='Owner' [(ngModel)]='data.boardItem.owner'>
+            <mat-option *ngFor='let user of userList' value={{user}}>{{user}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
 
-        <mat-grid-tile>
-          <mat-form-field class="text-input-half-width">
-            <input matInput placeholder='Priority' [(ngModel)]='data.boardItem.priority'>
-          </mat-form-field>
-        </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field class="text-input-half-width">
+          <input matInput placeholder='Priority' [(ngModel)]='data.boardItem.priority'>
+        </mat-form-field>
+      </mat-grid-tile>
 
-        <mat-grid-tile>
-          <mat-form-field class="text-input-half-width">
-            <mat-select placeholder='Status' [(ngModel)]='data.boardItem.status'>
-              <mat-option *ngFor='let status of statusList' value={{status}}>{{status}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field class="text-input-half-width">
+          <mat-select placeholder='Status' [(ngModel)]='data.boardItem.status'>
+            <mat-option *ngFor='let status of statusList' value={{status}}>{{status}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
 
-        <mat-grid-tile>
-          <mat-form-field class="text-input-half-width">
-            <input matInput placeholder='Estimation' [(ngModel)]='data.boardItem.estimation'>
-          </mat-form-field>
-        </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field class="text-input-half-width">
+          <input matInput placeholder='Estimation' [(ngModel)]='data.boardItem.estimation'>
+        </mat-form-field>
+      </mat-grid-tile>
     </mat-grid-list>
   </div>
 
   <div mat-dialog-actions>
-    <button mat-raised-button (click)='onNoClick()'>Cancel</button>
-    <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
+    <div style="float: left; width: 90%">
+      <button mat-raised-button (click)='onNoClick()'>Cancel</button>
+      <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
+    </div>
+    <div style="float: right; width: 10%">
+      <button mat-raised-button color="warn" (click)='deleteBoardItem(data)' *ngIf='!data.isNew'>Delete
+      </button>
+    </div>
   </div>
 </div>

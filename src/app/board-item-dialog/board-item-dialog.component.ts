@@ -4,6 +4,7 @@ import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
+import {BoardService} from '../board/board.service';
 
 
 @Component({
@@ -24,7 +25,8 @@ export class BoardItemDialogComponent implements OnInit {
 
   // constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
   constructor(public dialogRef: MatDialogRef<BoardItemDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private boardService: BoardService) {
   }
 
   ngOnInit() {
@@ -42,6 +44,18 @@ export class BoardItemDialogComponent implements OnInit {
 
   onNoClick(): void {
     console.log('No data was changed');
+    this.dialogRef.close();
+  }
+
+  deleteBoardItem(data: any) {
+    this.boardService.deleteUserStory(data.boardItem.id).subscribe(
+      (response) => {
+        if (response == null) {
+          console.log('User story was removed.');
+        }
+      },
+      (error) => console.log(error)
+    );
     this.dialogRef.close();
   }
 }

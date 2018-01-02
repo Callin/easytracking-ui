@@ -15,7 +15,6 @@ export class BoardComponent implements OnInit {
   IN_REVIEW = 'In Review';
   DONE = 'Done';
   statusList = [this.NEW, this.IN_PROGRESS, this.IN_REVIEW, this.DONE];
-  userList = ['Dragos', 'David', 'Bogdan', 'Johny'];
 
   allUserStories: UserStory[];
 
@@ -51,7 +50,7 @@ export class BoardComponent implements OnInit {
       const dialogRef = this.dialog.open(BoardItemDialogComponent, {
         width: '80%',
         height: '60%',
-        data: {boardItem}
+        data: {boardItem, isNew}
       });
 
       dialogRef.afterClosed().subscribe(result => {
@@ -75,7 +74,7 @@ export class BoardComponent implements OnInit {
       const dialogRef = this.dialog.open(BoardItemDialogComponent, {
         width: '80%',
         height: '60%',
-        data: {boardItem}
+        data: {boardItem, isNew}
       });
 
       dialogRef.afterClosed().subscribe(result => {
@@ -121,13 +120,21 @@ export class BoardComponent implements OnInit {
   }
 
   cloneUserStory(userStory: UserStory): UserStory {
-    const copy: UserStory = new UserStory(userStory.title, userStory.owner, userStory.priority,
-      userStory.estimation, userStory.description, userStory.status, userStory.projectId);
+    const copy: UserStory = new UserStory(
+      userStory.id,
+      userStory.title,
+      userStory.owner,
+      userStory.priority,
+      userStory.estimation,
+      userStory.description,
+      userStory.status,
+      userStory.projectId);
 
     return copy;
   }
 
   copyUserStory(item: UserStory, clone: UserStory): void {
+    item.id = clone.id;
     item.status = clone.status;
     item.description = clone.description;
     item.estimation = clone.estimation;
@@ -139,6 +146,7 @@ export class BoardComponent implements OnInit {
 
   getBlankItemTemplate(): UserStory {
     return new UserStory(
+      null,
       'Replace with a suggestive title',
       '',
       0,
