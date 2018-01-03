@@ -145,6 +145,23 @@ export class BoardComponent implements OnInit {
       );
   }
 
+  openNewTaskDialog(userStory: UserStory): void {
+    // show predefined data
+    const boardItem = this.getBlankTask(userStory.id);
+    const isNew = true;
+    const dialogRef = this.dialog.open(BoardItemDialogComponent, {
+      width: '80%',
+      height: '60%',
+      data: {boardItem, isNew}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        this.onCreateTask(result.boardItem, userStory);
+      }
+    });
+  }
+
   onCreateTask(task: Task, userStory: UserStory) {
     this.boardService.createTask(task)
       .subscribe(
@@ -153,6 +170,24 @@ export class BoardComponent implements OnInit {
         },
         (error) => console.log(error)
       );
+  }
+
+  openExistingTaskDialog(item: Task): void {
+    const boardItem = this.cloneTask(item);
+    const isNew = false;
+    const dialogRef = this.dialog.open(BoardItemDialogComponent, {
+      width: '80%',
+      height: '60%',
+      data: {boardItem, isNew}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        // update board item
+        this.copyTask(item, result.boardItem);
+        this.onUpdatetask(item);
+      }
+    });
   }
 
   onUpdatetask(task: Task) {
@@ -166,7 +201,7 @@ export class BoardComponent implements OnInit {
   }
 
   cloneUserStory(userStory: UserStory): UserStory {
-    const copy: UserStory = new UserStory(
+    return new UserStory(
       userStory.id,
       userStory.title,
       userStory.owner,
@@ -176,8 +211,6 @@ export class BoardComponent implements OnInit {
       userStory.status,
       userStory.projectId,
       userStory.taskList);
-
-    return copy;
   }
 
   copyUserStory(item: UserStory, clone: UserStory): void {
@@ -190,6 +223,29 @@ export class BoardComponent implements OnInit {
     item.owner = clone.owner;
     item.projectId = clone.projectId;
     item.taskList = clone.taskList;
+  }
+
+  cloneTask(task: Task): Task {
+    return new Task(
+      task.id,
+      task.title,
+      task.owner,
+      task.priority,
+      task.estimation,
+      task.description,
+      task.status,
+      task.userStoryId);
+  }
+
+  copyTask(item: Task, clone: Task): void {
+    item.id = clone.id;
+    item.status = clone.status;
+    item.description = clone.description;
+    item.estimation = clone.estimation;
+    item.priority = clone.priority;
+    item.title = clone.title;
+    item.owner = clone.owner;
+    item.userStoryId = clone.userStoryId;
   }
 
   getBlankUserStory(): UserStory {
@@ -205,7 +261,23 @@ export class BoardComponent implements OnInit {
       null);
   }
 
-  onStatusChange(item: UserStory) {
+  getBlankTask(userStoryId: number): Task {
+    return new Task(
+      null,
+      'Replace with a suggestive title',
+      '',
+      0,
+      0,
+      'Replace with a comprehensive description',
+      this.NEW,
+      userStoryId);
+  }
+
+  onUserStoryStatusChange(item: UserStory) {
     this.onUpdateUserStory(item);
+  }
+
+  onTaskStatusChange(item: Task) {
+    this.onUpdatetask(item);
   }
 }

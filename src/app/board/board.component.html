@@ -29,10 +29,10 @@
     <div class="wrapper-div">
       <div class="board-add-new-item div-one">
         <div> <!-- story item-->
-          <mat-icon color="basic" (click)="openNewUserStoryDialog()">add_box</mat-icon>
+          <mat-icon color="primary" (click)="openNewUserStoryDialog()">add_box</mat-icon>
         </div>
         <div> <!-- task item-->
-          <mat-icon color="primary" (click)="openNewUserStoryDialog()">add_box</mat-icon>
+          <mat-icon color="accent" (click)="openNewTaskDialog(userStory)">add_box</mat-icon>
         </div>
         <div> <!-- bug item-->
           <mat-icon color="warn">add_box</mat-icon>
@@ -52,7 +52,7 @@
             <div class="owner">Owner: {{userStory.owner}}</div>
 
             <mat-form-field>
-              <mat-select [(value)]="userStory.status" (change)='onStatusChange(userStory)'>
+              <mat-select [(value)]="userStory.status" (change)='onUserStoryStatusChange(userStory)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -65,14 +65,14 @@
 
 
         <mat-card class="board-item" *ngFor="let task of getNewTasks(userStory.taskList)">
-          <mat-card-header class="board-task-header" (click)="openDialog(task, false)">
+          <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(task)">
             <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <div class="owner">Owner: {{task.owner}}</div>
 
             <mat-form-field>
-              <mat-select [(value)]="task.status" (change)='onStatusChange(task)'>
+              <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -104,7 +104,7 @@
             <div class="owner">Owner: {{userStory.owner}}</div>
 
             <mat-form-field>
-              <mat-select [(value)]="userStory.status" (change)='onStatusChange(userStory)'>
+              <mat-select [(value)]="userStory.status" (change)='onUserStoryStatusChange(userStory)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -117,14 +117,14 @@
 
 
         <mat-card class="board-item" *ngFor="let task of getInProgressTasks(userStory.taskList)">
-          <mat-card-header class="board-task-header" (click)="openDialog(task, false)">
+          <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(task)">
             <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <div class="owner">Owner: {{task.owner}}</div>
 
             <mat-form-field>
-              <mat-select [(value)]="task.status" (change)='onStatusChange(task)'>
+              <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -156,7 +156,7 @@
             <div class="owner">Owner: {{userStory.owner}}</div>
 
             <mat-form-field>
-              <mat-select [(value)]="userStory.status" (change)='onStatusChange(userStory)'>
+              <mat-select [(value)]="userStory.status" (change)='onUserStoryStatusChange(userStory)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -169,14 +169,14 @@
 
 
         <mat-card class="board-item" *ngFor="let task of getInReviewTasks(userStory.taskList)">
-          <mat-card-header class="board-task-header" (click)="openDialog(task, false)">
+          <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(task)">
             <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <div class="owner">Owner: {{task.owner}}</div>
 
             <mat-form-field>
-              <mat-select [(value)]="task.status" (change)='onStatusChange(task)'>
+              <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -208,7 +208,7 @@
             <div class="owner">Owner: {{userStory.owner}}</div>
 
             <mat-form-field>
-              <mat-select [(value)]="userStory.status" (change)='onStatusChange(userStory)'>
+              <mat-select [(value)]="userStory.status" (change)='onUserStoryStatusChange(userStory)'>
                 <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -221,15 +221,15 @@
 
 
         <mat-card class="board-item" *ngFor="let task of getDoneTasks(userStory.taskList)">
-          <mat-card-header class="board-item-title" (click)="openDialog(task, false)">
+          <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(task)">
             <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <div class="owner">Owner: {{task.owner}}</div>
 
             <mat-form-field>
-              <mat-select [(value)]="task.status" (change)='onStatusChange(task)'>
-                <mat-option *ngFor="let status of status" value={{status}}>{{status}}</mat-option>
+              <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
+                <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
               </mat-select>
             </mat-form-field>
 
