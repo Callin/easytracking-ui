@@ -35,9 +35,9 @@
     </div>
   </div>
 </div>
-<div class="row board-row" *ngFor="let userStory of allUserStories; let i = index">
+<div class="row board-row" *ngFor="let userStory of allUserStories; let i = index" (mouseenter)="changeIsMouseOver(true, i)" (mouseleave)="changeIsMouseOver(false, i)">
   <div class="col-sm-3 board-column">
-    <div class="wrapper-div" (mouseenter)="changeIsMouseOver(true, i)" (mouseleave)="changeIsMouseOver(false, i)">
+    <div class="wrapper-div">
       <div class="board-add-new-item div-one" [ngClass]="{'show-buttons':getIsMouseOver(i)}">
         <div> <!-- user story ite, -->
           <mat-icon color="primary" (click)="openNewUserStoryDialog()" matTooltip="Add user story">add_box</mat-icon>
