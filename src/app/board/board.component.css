@@ -49,6 +49,10 @@
   margin-top: 20px;
 }
 
+.board-row {
+  border-bottom: solid 1px #5db709;
+}
+
 .owner {
   padding-top: 10px;
 }
@@ -61,6 +65,11 @@
 .div-one {
   margin-left: 1px;
   float: right;
+  display: none;
+}
+
+.show-buttons {
+  display: block;
 }
 
 .div-two {

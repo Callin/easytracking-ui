@@ -24,7 +24,7 @@
   </div>
 </div>
 
-<div class="row" *ngIf="allUserStories.length === 0">
+<div class="row board-row" *ngIf="allUserStories.length === 0">
   <div class="col-sm-3 board-column">
     <div class="wrapper-div">
       <div class="board-add-new-item div-one">
@@ -35,23 +35,22 @@
     </div>
   </div>
 </div>
-<div class="row" *ngFor="let userStory of allUserStories">
+<div class="row board-row" *ngFor="let userStory of allUserStories; let i = index">
   <div class="col-sm-3 board-column">
-    <div class="wrapper-div">
-      <div class="board-add-new-item div-one">
-        <div> <!-- story item-->
-          <mat-icon color="primary" (click)="openNewUserStoryDialog()">add_box</mat-icon>
+    <div class="wrapper-div" (mouseenter)="changeIsMouseOver(true, i)" (mouseleave)="changeIsMouseOver(false, i)">
+      <div class="board-add-new-item div-one" [ngClass]="{'show-buttons':getIsMouseOver(i)}">
+        <div> <!-- user story ite, -->
+          <mat-icon color="primary" (click)="openNewUserStoryDialog()" matTooltip="Add user story">add_box</mat-icon>
         </div>
         <div> <!-- task item-->
-          <mat-icon color="accent" (click)="openNewTaskDialog(userStory)">add_box</mat-icon>
+          <mat-icon color="accent" (click)="openNewTaskDialog(userStory)" matTooltip="Add task">add_box</mat-icon>
         </div>
         <div> <!-- bug item-->
-          <mat-icon color="warn">add_box</mat-icon>
+          <mat-icon color="warn"  matTooltip="Add bug">add_box</mat-icon>
         </div>
       </div>
 
       <div class="div-two">
-
 
         <!--- -------------- userStory if status = New --------------  -->
         <mat-card class="board-item" *ngIf="userStory.status === NEW">
@@ -73,7 +72,6 @@
 
           </mat-card-content>
         </mat-card>
-
 
         <mat-card class="board-item" *ngFor="let task of getNewTasks(userStory.taskList)">
           <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(task)">

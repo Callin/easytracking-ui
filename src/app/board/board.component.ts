@@ -18,6 +18,8 @@ export class BoardComponent implements OnInit {
   DONE = AppConstants.DONE;
   statusList = AppConstants.STATUS;
 
+  isMouseOver: boolean[] = [];
+
   allUserStories: UserStory[];
 
   constructor(public dialog: MatDialog,
@@ -243,5 +245,17 @@ export class BoardComponent implements OnInit {
 
   onTaskStatusChange(item: Task) {
     this.onUpdatetask(item);
+  }
+
+  changeIsMouseOver(newValue: boolean, index: number) {
+    this.isMouseOver[index] = newValue;
+  }
+
+  getIsMouseOver(index: number) {
+    if (this.isMouseOver.length < index) {
+      this.isMouseOver.push(false);
+    } else {
+      return this.isMouseOver[index];
+    }
   }
 }
