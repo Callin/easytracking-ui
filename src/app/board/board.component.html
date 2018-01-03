@@ -24,6 +24,17 @@
   </div>
 </div>
 
+<div class="row" *ngIf="allUserStories.length === 0">
+  <div class="col-sm-3 board-column">
+    <div class="wrapper-div">
+      <div class="board-add-new-item div-one">
+          <div> <!-- story item-->
+            <mat-icon color="primary" (click)="openNewUserStoryDialog()">add_box</mat-icon>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="row" *ngFor="let userStory of allUserStories">
   <div class="col-sm-3 board-column">
     <div class="wrapper-div">

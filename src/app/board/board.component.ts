@@ -44,41 +44,6 @@ export class BoardComponent implements OnInit {
     return taskList.filter(item => item.status === AppConstants.DONE);
   }
 
-
-  openDialog(item: any, isNew: boolean): void {
-    console.log('Is new: ' + isNew);
-    if (isNew) {
-      // show predefined data
-      const boardItem = this.getBlankUserStory();
-      const dialogRef = this.dialog.open(BoardItemDialogComponent, {
-        width: '80%',
-        height: '60%',
-        data: {boardItem, isNew}
-      });
-
-      dialogRef.afterClosed().subscribe(result => {
-        if (result != null) {
-          this.onCreateUserStory(result.boardItem);
-        }
-      });
-    } else {
-      const boardItem = this.cloneUserStory(item);
-      const dialogRef = this.dialog.open(BoardItemDialogComponent, {
-        width: '80%',
-        height: '60%',
-        data: {boardItem, isNew}
-      });
-
-      dialogRef.afterClosed().subscribe(result => {
-        if (result != null) {
-          // update data, existing item being updated
-          this.copyUserStory(item, result.boardItem);
-          this.onUpdateUserStory(item);
-        }
-      });
-    }
-  }
-
   openNewUserStoryDialog(): void {
     // show predefined data
     const boardItem = this.getBlankUserStory();
@@ -138,7 +103,6 @@ export class BoardComponent implements OnInit {
     return this.boardService.getUserStories()
       .subscribe(
         (userStoryList) => {
-          console.log('User story list size: ' + userStoryList.length);
           this.allUserStories = userStoryList;
         },
         (error) => console.log(error)
