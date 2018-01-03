@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {UserStory} from './dto/user-story';
+import {Task} from './dto/task';
 import {BoardItemDialogComponent} from '../board-item-dialog/board-item-dialog.component';
 import {MatDialog} from '@angular/material';
 import {BoardService} from './board.service';
+import {AppConstants} from './dto/app-constants';
 
 @Component({
   selector: 'app-board',
@@ -10,11 +12,11 @@ import {BoardService} from './board.service';
   styleUrls: ['./board.component.css'],
 })
 export class BoardComponent implements OnInit {
-  NEW = 'New';
-  IN_PROGRESS = 'In Progress';
-  IN_REVIEW = 'In Review';
-  DONE = 'Done';
-  statusList = [this.NEW, this.IN_PROGRESS, this.IN_REVIEW, this.DONE];
+  NEW = AppConstants.NEW;
+  IN_PROGRESS = AppConstants.IN_PROGRESS;
+  IN_REVIEW = AppConstants.IN_REVIEW;
+  DONE = AppConstants.DONE;
+  statusList = AppConstants.STATUS;
 
   allUserStories: UserStory[];
 
@@ -26,27 +28,28 @@ export class BoardComponent implements OnInit {
     this.onGetUserStories();
   }
 
-  getNewItems() {
-    return this.allUserStories.filter(item => item.status === this.NEW);
+  getNewTasks(taskList: Task[]): Task[] {
+    return taskList.filter(item => item.status === AppConstants.NEW);
   }
 
-  getInProgressItems() {
-    return this.allUserStories.filter(item => item.status === this.IN_PROGRESS);
+  getInProgressTasks(taskList: Task[]): Task[] {
+    return taskList.filter(item => item.status === AppConstants.IN_PROGRESS);
   }
 
-  getInReviewItems() {
-    return this.allUserStories.filter(item => item.status === this.IN_REVIEW);
+  getInReviewTasks(taskList: Task[]): Task[] {
+    return taskList.filter(item => item.status === AppConstants.IN_REVIEW);
   }
 
-  getDoneItems() {
-    return this.allUserStories.filter(item => item.status === this.DONE);
+  getDoneTasks(taskList: Task[]): Task[] {
+    return taskList.filter(item => item.status === AppConstants.DONE);
   }
 
-  openDialog(item: UserStory, isNew: boolean): void {
+
+  openDialog(item: any, isNew: boolean): void {
     console.log('Is new: ' + isNew);
     if (isNew) {
       // show predefined data
-      const boardItem = this.getBlankItemTemplate();
+      const boardItem = this.getBlankUserStory();
       const dialogRef = this.dialog.open(BoardItemDialogComponent, {
         width: '80%',
         height: '60%',
@@ -54,22 +57,11 @@ export class BoardComponent implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        console.log('saving...');
         if (result != null) {
-          // save data
-          console.log('New data:' +
-            '\ntitle: ' + result.boardItem.title +
-            '\ndescription: ' + result.boardItem.description +
-            '\nowner: ' + result.boardItem.owner +
-            '\nstatus: ' + result.boardItem.status +
-            '\nestimation: ' + result.boardItem.estimation
-          );
-
           this.onCreateUserStory(result.boardItem);
         }
       });
     } else {
-      // user wants to open an existing story
       const boardItem = this.cloneUserStory(item);
       const dialogRef = this.dialog.open(BoardItemDialogComponent, {
         width: '80%',
@@ -79,13 +71,29 @@ export class BoardComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         if (result != null) {
-          // update data
-          // existing item being updated
+          // update data, existing item being updated
           this.copyUserStory(item, result.boardItem);
           this.onUpdateUserStory(item);
         }
       });
     }
+  }
+
+  openNewUserStoryDialog(): void {
+    // show predefined data
+    const boardItem = this.getBlankUserStory();
+    const isNew = true;
+    const dialogRef = this.dialog.open(BoardItemDialogComponent, {
+      width: '80%',
+      height: '60%',
+      data: {boardItem, isNew}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        this.onCreateUserStory(result.boardItem);
+      }
+    });
   }
 
   onCreateUserStory(userStory: UserStory) {
@@ -96,6 +104,24 @@ export class BoardComponent implements OnInit {
         },
         (error) => console.log(error)
       );
+  }
+
+  openExistingUserStoryDialog(item: UserStory): void {
+    const boardItem = this.cloneUserStory(item);
+    const isNew = false;
+    const dialogRef = this.dialog.open(BoardItemDialogComponent, {
+      width: '80%',
+      height: '60%',
+      data: {boardItem, isNew}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        // update board item
+        this.copyUserStory(item, result.boardItem);
+        this.onUpdateUserStory(item);
+      }
+    });
   }
 
   onUpdateUserStory(userStory: UserStory) {
@@ -119,6 +145,26 @@ export class BoardComponent implements OnInit {
       );
   }
 
+  onCreateTask(task: Task, userStory: UserStory) {
+    this.boardService.createTask(task)
+      .subscribe(
+        (response) => {
+          userStory.taskList.push(response);
+        },
+        (error) => console.log(error)
+      );
+  }
+
+  onUpdatetask(task: Task) {
+    this.boardService.updateTask(task)
+      .subscribe(
+        (updatedTask: Task) => {
+          console.log('Task with id: ' + task.id + ' has been updated ');
+        },
+        (error) => console.log(error)
+      );
+  }
+
   cloneUserStory(userStory: UserStory): UserStory {
     const copy: UserStory = new UserStory(
       userStory.id,
@@ -128,7 +174,8 @@ export class BoardComponent implements OnInit {
       userStory.estimation,
       userStory.description,
       userStory.status,
-      userStory.projectId);
+      userStory.projectId,
+      userStory.taskList);
 
     return copy;
   }
@@ -142,9 +189,10 @@ export class BoardComponent implements OnInit {
     item.title = clone.title;
     item.owner = clone.owner;
     item.projectId = clone.projectId;
+    item.taskList = clone.taskList;
   }
 
-  getBlankItemTemplate(): UserStory {
+  getBlankUserStory(): UserStory {
     return new UserStory(
       null,
       'Replace with a suggestive title',
@@ -153,7 +201,8 @@ export class BoardComponent implements OnInit {
       0,
       'Replace with a comprehensive description',
       this.NEW,
-      1);
+      1,
+      null);
   }
 
   onStatusChange(item: UserStory) {

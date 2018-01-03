@@ -4,8 +4,14 @@
   margin-bottom: 20px;
 }
 
-.board-item-title {
+.board-user-story-header {
+  background-color: #673ab7;
+  color: #ffffff;
+}
+
+.board-task-header {
   background-color: #ffd740;
+  color: #000000;
 }
 
 .board-add-new-item {

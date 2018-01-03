@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {UserStory} from './dto/user-story';
+import {Task} from './dto/task';
 import 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -54,6 +55,45 @@ export class BoardService {
 
   deleteUserStory(userStoryId: number) {
     return this.httpClient.delete(this.serverUrl + '/api/userstory/' + userStoryId)
+      .map(
+        (response) => {
+          return response;
+        }
+      )
+      .catch(
+        (error: Response) => {
+          return Observable.throw(error);
+        }
+      );
+  }
+
+  createTask(task: Task) {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.post<Task>(this.serverUrl + '/api/task', task, {headers: header})
+      .map(
+        (taskResponse) => {
+          return taskResponse;
+        }
+      )
+      .catch(
+        (error: Response) => {
+          return Observable.throw(error);
+        }
+      );
+  }
+
+  updateTask(task: Task) {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.put<Task>(this.serverUrl + '/api/task', task, {headers: header})
+      .map(
+        (taskResponse) => {
+          return taskResponse;
+        }
+      );
+  }
+
+  deletetask(taskId: number) {
+    return this.httpClient.delete(this.serverUrl + '/api/task/' + taskId)
       .map(
         (response) => {
           return response;
