@@ -48,14 +48,26 @@ export class BoardItemDialogComponent implements OnInit {
   }
 
   deleteBoardItem(data: any) {
-    this.boardService.deleteUserStory(data.boardItem.id).subscribe(
-      (response) => {
-        if (response == null) {
-          console.log('User story was removed.');
-        }
-      },
-      (error) => console.log(error)
-    );
+    if (data.boardItemType === 'UserStory') {
+      this.boardService.deleteUserStory(data.boardItem.id).subscribe(
+        (response) => {
+          if (response == null) {
+            console.log('User story was removed.');
+          }
+        },
+        (error) => console.log(error)
+      );
+    } else if (data.boardItemType = 'Task') {
+      this.boardService.deleteTask(data.boardItem.id).subscribe(
+        (response) => {
+          if (response == null) {
+            console.log('Task was removed.');
+          }
+        },
+        (error) => console.log(error)
+      );
+    }
+
     this.dialogRef.close();
   }
 }

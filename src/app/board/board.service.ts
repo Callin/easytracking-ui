@@ -92,7 +92,7 @@ export class BoardService {
       );
   }
 
-  deletetask(taskId: number) {
+  deleteTask(taskId: number) {
     return this.httpClient.delete(this.serverUrl + '/api/task/' + taskId)
       .map(
         (response) => {

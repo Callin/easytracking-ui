@@ -50,10 +50,11 @@ export class BoardComponent implements OnInit {
     // show predefined data
     const boardItem = this.getBlankUserStory();
     const isNew = true;
+    const boardItemType = 'UserStory';
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
-      data: {boardItem, isNew}
+      data: {boardItem, isNew, boardItemType}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -76,10 +77,11 @@ export class BoardComponent implements OnInit {
   openExistingUserStoryDialog(item: UserStory): void {
     const boardItem = this.cloneUserStory(item);
     const isNew = false;
+    const boardItemType = 'UserStory';
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
-      data: {boardItem, isNew}
+      data: {boardItem, isNew, boardItemType}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -115,10 +117,11 @@ export class BoardComponent implements OnInit {
     // show predefined data
     const boardItem = this.getBlankTask(userStory.id);
     const isNew = true;
+    const boardItemType = 'Task';
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
-      data: {boardItem, isNew}
+      data: {boardItem, isNew, boardItemType}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -141,10 +144,11 @@ export class BoardComponent implements OnInit {
   openExistingTaskDialog(item: Task): void {
     const boardItem = this.cloneTask(item);
     const isNew = false;
+    const boardItemType = 'Task';
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
-      data: {boardItem, isNew}
+      data: {boardItem, isNew, boardItemType}
     });
 
     dialogRef.afterClosed().subscribe(result => {
