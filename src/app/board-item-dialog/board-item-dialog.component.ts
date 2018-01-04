@@ -5,6 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
 import {BoardService} from '../board/board.service';
+import {BoardItemTypeEnum} from '../board/dto/board-item-type-enum';
 
 
 @Component({
@@ -48,7 +49,7 @@ export class BoardItemDialogComponent implements OnInit {
   }
 
   deleteBoardItem(data: any) {
-    if (data.boardItemType === 'UserStory') {
+    if (data.boardItemType === BoardItemTypeEnum.USER_STORY) {
       this.boardService.deleteUserStory(data.boardItem.id).subscribe(
         (response) => {
           if (response == null) {
@@ -57,7 +58,7 @@ export class BoardItemDialogComponent implements OnInit {
         },
         (error) => console.log(error)
       );
-    } else if (data.boardItemType = 'Task') {
+    } else if (data.boardItemType = BoardItemTypeEnum.TASK) {
       this.boardService.deleteTask(data.boardItem.id).subscribe(
         (response) => {
           if (response == null) {

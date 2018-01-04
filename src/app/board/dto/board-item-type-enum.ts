@@ -1,4 +1,5 @@
 export enum BoardItemTypeEnum {
   USER_STORY = 'UserStory',
-  TASK = 'Task'
+  TASK = 'Task',
+  BUG = 'Bug'
 }

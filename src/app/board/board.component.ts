@@ -5,6 +5,7 @@ import {BoardItemDialogComponent} from '../board-item-dialog/board-item-dialog.c
 import {MatDialog} from '@angular/material';
 import {BoardService} from './board.service';
 import {AppConstants} from './dto/app-constants';
+import {BoardItemTypeEnum} from './dto/board-item-type-enum';
 
 @Component({
   selector: 'app-board',
@@ -50,7 +51,7 @@ export class BoardComponent implements OnInit {
     // show predefined data
     const boardItem = this.getBlankUserStory();
     const isNew = true;
-    const boardItemType = 'UserStory';
+    const boardItemType = BoardItemTypeEnum.USER_STORY;
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
@@ -77,7 +78,7 @@ export class BoardComponent implements OnInit {
   openExistingUserStoryDialog(item: UserStory): void {
     const boardItem = this.cloneUserStory(item);
     const isNew = false;
-    const boardItemType = 'UserStory';
+    const boardItemType = BoardItemTypeEnum.USER_STORY;
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
@@ -117,7 +118,7 @@ export class BoardComponent implements OnInit {
     // show predefined data
     const boardItem = this.getBlankTask(userStory.id);
     const isNew = true;
-    const boardItemType = 'Task';
+    const boardItemType = BoardItemTypeEnum.TASK;
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
@@ -144,7 +145,7 @@ export class BoardComponent implements OnInit {
   openExistingTaskDialog(item: Task): void {
     const boardItem = this.cloneTask(item);
     const isNew = false;
-    const boardItemType = 'Task';
+    const boardItemType = BoardItemTypeEnum.TASK;
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
