@@ -7,7 +7,6 @@ import {map} from 'rxjs/operators/map';
 import {BoardService} from '../board/board.service';
 import {BoardItemTypeEnum} from '../board/dto/board-item-type-enum';
 
-
 @Component({
   selector: 'app-board-item-dialog',
   templateUrl: './board-item-dialog.component.html',
@@ -24,7 +23,6 @@ export class BoardItemDialogComponent implements OnInit {
   statusList = [this.NEW, this.IN_PROGRESS, this.IN_REVIEW, this.DONE];
   userList = ['Dragos', 'David', 'Bogdan', 'Johny'];
 
-  // constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
   constructor(public dialogRef: MatDialogRef<BoardItemDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private boardService: BoardService) {
@@ -58,11 +56,20 @@ export class BoardItemDialogComponent implements OnInit {
         },
         (error) => console.log(error)
       );
-    } else if (data.boardItemType = BoardItemTypeEnum.TASK) {
+    } else if (data.boardItemType === BoardItemTypeEnum.TASK) {
       this.boardService.deleteTask(data.boardItem.id).subscribe(
         (response) => {
           if (response == null) {
             console.log('Task was removed.');
+          }
+        },
+        (error) => console.log(error)
+      );
+    } else if (data.boardItemType === BoardItemTypeEnum.BUG) {
+      this.boardService.deleteBug(data.boardItem.id).subscribe(
+        (response) => {
+          if (response == null) {
+            console.log('Bug was removed.');
           }
         },
         (error) => console.log(error)

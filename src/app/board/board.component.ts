@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserStory} from './dto/user-story';
 import {Task} from './dto/task';
+import {Bug} from './dto/bug';
 import {BoardItemDialogComponent} from '../board-item-dialog/board-item-dialog.component';
 import {MatDialog} from '@angular/material';
 import {BoardService} from './board.service';
@@ -31,21 +32,17 @@ export class BoardComponent implements OnInit {
     this.onGetUserStories();
   }
 
-  getNewTasks(taskList: Task[]): Task[] {
-    return taskList.filter(item => item.status === AppConstants.NEW);
+  onGetUserStories() {
+    return this.boardService.getUserStories()
+      .subscribe(
+        (userStoryList) => {
+          this.allUserStories = userStoryList;
+        },
+        (error) => console.log(error)
+      );
   }
 
-  getInProgressTasks(taskList: Task[]): Task[] {
-    return taskList.filter(item => item.status === AppConstants.IN_PROGRESS);
-  }
-
-  getInReviewTasks(taskList: Task[]): Task[] {
-    return taskList.filter(item => item.status === AppConstants.IN_REVIEW);
-  }
-
-  getDoneTasks(taskList: Task[]): Task[] {
-    return taskList.filter(item => item.status === AppConstants.DONE);
-  }
+  // ------------------- user story dialog operations -------------------
 
   openNewUserStoryDialog(): void {
     // show predefined data
@@ -104,15 +101,66 @@ export class BoardComponent implements OnInit {
       );
   }
 
-  onGetUserStories() {
-    return this.boardService.getUserStories()
+  // ------------------- task and dialog operations -------------------
+
+  openNewBugDialog(userStory: UserStory): void {
+    // show predefined data
+    const boardItem = this.getBlankBug(userStory.id);
+    const isNew = true;
+    const boardItemType = BoardItemTypeEnum.BUG;
+    const dialogRef = this.dialog.open(BoardItemDialogComponent, {
+      width: '80%',
+      height: '60%',
+      data: {boardItem, isNew, boardItemType}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        this.onCreateBug(result.boardItem, userStory);
+      }
+    });
+  }
+
+  onCreateBug(bug: Bug, userStory: UserStory) {
+    this.boardService.createBug(bug)
       .subscribe(
-        (userStoryList) => {
-          this.allUserStories = userStoryList;
+        (response) => {
+          userStory.bugList.push(response);
         },
         (error) => console.log(error)
       );
   }
+
+  openExistingBugDialog(item: Bug): void {
+    const boardItem = this.cloneBug(item);
+    const isNew = false;
+    const boardItemType = BoardItemTypeEnum.BUG;
+    const dialogRef = this.dialog.open(BoardItemDialogComponent, {
+      width: '80%',
+      height: '60%',
+      data: {boardItem, isNew, boardItemType}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        // update board item
+        this.copyBug(item, result.boardItem);
+        this.onUpdateBug(item);
+      }
+    });
+  }
+
+  onUpdateBug(bug: Bug) {
+    this.boardService.updateBug(bug)
+      .subscribe(
+        (updatedBug: Bug) => {
+          console.log('Bug with id: ' + bug.id + ' has been updated ');
+        },
+        (error) => console.log(error)
+      );
+  }
+
+  // ------------------- bug and dialog operations -------------------
 
   openNewTaskDialog(userStory: UserStory): void {
     // show predefined data
@@ -156,12 +204,12 @@ export class BoardComponent implements OnInit {
       if (result != null) {
         // update board item
         this.copyTask(item, result.boardItem);
-        this.onUpdatetask(item);
+        this.onUpdateTask(item);
       }
     });
   }
 
-  onUpdatetask(task: Task) {
+  onUpdateTask(task: Task) {
     this.boardService.updateTask(task)
       .subscribe(
         (updatedTask: Task) => {
@@ -181,7 +229,8 @@ export class BoardComponent implements OnInit {
       userStory.description,
       userStory.status,
       userStory.projectId,
-      userStory.taskList);
+      userStory.taskList,
+      userStory.bugList);
   }
 
   copyUserStory(item: UserStory, clone: UserStory): void {
@@ -194,6 +243,7 @@ export class BoardComponent implements OnInit {
     item.owner = clone.owner;
     item.projectId = clone.projectId;
     item.taskList = clone.taskList;
+    item.bugList = clone.bugList;
   }
 
   cloneTask(task: Task): Task {
@@ -219,6 +269,29 @@ export class BoardComponent implements OnInit {
     item.userStoryId = clone.userStoryId;
   }
 
+  cloneBug(bug: Bug): Bug {
+    return new Bug(
+      bug.id,
+      bug.title,
+      bug.owner,
+      bug.priority,
+      bug.estimation,
+      bug.description,
+      bug.status,
+      bug.userStoryId);
+  }
+
+  copyBug(item: Bug, clone: Bug): void {
+    item.id = clone.id;
+    item.status = clone.status;
+    item.description = clone.description;
+    item.estimation = clone.estimation;
+    item.priority = clone.priority;
+    item.title = clone.title;
+    item.owner = clone.owner;
+    item.userStoryId = clone.userStoryId;
+  }
+
   getBlankUserStory(): UserStory {
     return new UserStory(
       null,
@@ -229,6 +302,7 @@ export class BoardComponent implements OnInit {
       'Replace with a comprehensive description',
       this.NEW,
       1,
+      null,
       null);
   }
 
@@ -244,12 +318,28 @@ export class BoardComponent implements OnInit {
       userStoryId);
   }
 
+  getBlankBug(userStoryId: number): Bug {
+    return new Bug(
+      null,
+      'Replace with a suggestive title',
+      '',
+      0,
+      0,
+      'Replace with a comprehensive description',
+      this.NEW,
+      userStoryId);
+  }
+
   onUserStoryStatusChange(item: UserStory) {
     this.onUpdateUserStory(item);
   }
 
   onTaskStatusChange(item: Task) {
-    this.onUpdatetask(item);
+    this.onUpdateTask(item);
+  }
+
+  onBugStatusChange(item: Bug) {
+    this.onUpdateBug(item);
   }
 
   changeIsMouseOver(newValue: boolean, index: number) {

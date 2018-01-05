@@ -9,6 +9,11 @@
   color: #ffffff;
 }
 
+.board-bug-header {
+  background-color: #f44336;
+  color: #ffffff;
+}
+
 .board-task-header {
   background-color: #ffd740;
   color: #000000;

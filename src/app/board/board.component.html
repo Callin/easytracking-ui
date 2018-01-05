@@ -28,14 +28,15 @@
   <div class="col-sm-3 board-column">
     <div class="wrapper-div">
       <div class="board-add-new-item div-one">
-          <div> <!-- story item-->
-            <mat-icon color="primary" (click)="openNewUserStoryDialog()">add_box</mat-icon>
-          </div>
+        <div> <!-- story item-->
+          <mat-icon color="primary" (click)="openNewUserStoryDialog()">add_box</mat-icon>
+        </div>
       </div>
     </div>
   </div>
 </div>
-<div class="row board-row" *ngFor="let userStory of allUserStories; let i = index" (mouseenter)="changeIsMouseOver(true, i)" (mouseleave)="changeIsMouseOver(false, i)">
+<div class="row board-row" *ngFor="let userStory of allUserStories; let i = index"
+     (mouseenter)="changeIsMouseOver(true, i)" (mouseleave)="changeIsMouseOver(false, i)">
   <div class="col-sm-3 board-column">
     <div class="wrapper-div">
       <div class="board-add-new-item div-one" [ngClass]="{'show-buttons':getIsMouseOver(i)}">
@@ -46,7 +47,7 @@
           <mat-icon color="accent" (click)="openNewTaskDialog(userStory)" matTooltip="Add task">add_box</mat-icon>
         </div>
         <div> <!-- bug item-->
-          <mat-icon color="warn"  matTooltip="Add bug">add_box</mat-icon>
+          <mat-icon color="warn" (click)="openNewBugDialog(userStory)" matTooltip="Add bug">add_box</mat-icon>
         </div>
       </div>
 
@@ -73,24 +74,49 @@
           </mat-card-content>
         </mat-card>
 
-        <mat-card class="board-item" *ngFor="let task of getNewTasks(userStory.taskList)">
-          <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(task)">
-            <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <div class="owner">Owner: {{task.owner}}</div>
+        <!--- -------------- Tasks --------------  -->
+        <div *ngFor="let task of userStory.taskList">
+          <mat-card class="board-item" *ngIf="task.status === NEW">
+            <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(task)">
+              <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="owner">Owner: {{task.owner}}</div>
 
-            <mat-form-field>
-              <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
-                <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
-              </mat-select>
-            </mat-form-field>
+              <mat-form-field>
+                <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
+                  <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
+                </mat-select>
+              </mat-form-field>
 
-            <div>Priority: {{task.priority}}</div>
-            <div>Estimate: {{task.estimation}} h</div>
+              <div>Priority: {{task.priority}}</div>
+              <div>Estimate: {{task.estimation}} h</div>
 
-          </mat-card-content>
-        </mat-card>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!--- -------------- Bugs --------------  -->
+        <div *ngFor="let bug of userStory.bugList">
+          <mat-card class="board-item" *ngIf="bug.status === NEW">
+            <mat-card-header class="board-bug-header" (click)="openExistingBugDialog(bug)">
+              <mat-card-title>{{(bug.title.length>25)? (bug.title | slice:0:25)+'...':(bug.title)}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="owner">Owner: {{bug.owner}}</div>
+
+              <mat-form-field>
+                <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug)'>
+                  <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div>Priority: {{bug.priority}}</div>
+              <div>Estimate: {{bug.estimation}} h</div>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
       </div>
     </div>
   </div>
@@ -124,25 +150,49 @@
           </mat-card-content>
         </mat-card>
 
+        <!--- -------------- Tasks --------------  -->
+        <div *ngFor="let task of userStory.taskList">
+          <mat-card class="board-item" *ngIf="task.status === IN_PROGRESS">
+            <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(task)">
+              <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="owner">Owner: {{task.owner}}</div>
 
-        <mat-card class="board-item" *ngFor="let task of getInProgressTasks(userStory.taskList)">
-          <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(task)">
-            <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <div class="owner">Owner: {{task.owner}}</div>
+              <mat-form-field>
+                <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
+                  <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
+                </mat-select>
+              </mat-form-field>
 
-            <mat-form-field>
-              <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
-                <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
-              </mat-select>
-            </mat-form-field>
+              <div>Priority: {{task.priority}}</div>
+              <div>Estimate: {{task.estimation}} h</div>
 
-            <div>Priority: {{task.priority}}</div>
-            <div>Estimate: {{task.estimation}} h</div>
+            </mat-card-content>
+          </mat-card>
+        </div>
 
-          </mat-card-content>
-        </mat-card>
+        <!--- -------------- Bugs --------------  -->
+        <div *ngFor="let bug of userStory.bugList">
+          <mat-card class="board-item" *ngIf="bug.status === IN_PROGRESS">
+            <mat-card-header class="board-bug-header" (click)="openExistingBugDialog(bug)">
+              <mat-card-title>{{(bug.title.length>25)? (bug.title | slice:0:25)+'...':(bug.title)}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="owner">Owner: {{bug.owner}}</div>
+
+              <mat-form-field>
+                <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug)'>
+                  <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div>Priority: {{bug.priority}}</div>
+              <div>Estimate: {{bug.estimation}} h</div>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
       </div>
     </div>
   </div>
@@ -176,25 +226,50 @@
           </mat-card-content>
         </mat-card>
 
+        <!--- -------------- Tasks --------------  -->
+        <div *ngFor="let task of userStory.taskList">
+          <mat-card class="board-item" *ngIf="task.status === IN_REVIEW">
+            <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(task)">
+              <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="owner">Owner: {{task.owner}}</div>
 
-        <mat-card class="board-item" *ngFor="let task of getInReviewTasks(userStory.taskList)">
-          <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(task)">
-            <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <div class="owner">Owner: {{task.owner}}</div>
+              <mat-form-field>
+                <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
+                  <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
+                </mat-select>
+              </mat-form-field>
 
-            <mat-form-field>
-              <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
-                <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
-              </mat-select>
-            </mat-form-field>
+              <div>Priority: {{task.priority}}</div>
+              <div>Estimate: {{task.estimation}} h</div>
 
-            <div>Priority: {{task.priority}}</div>
-            <div>Estimate: {{task.estimation}} h</div>
+            </mat-card-content>
+          </mat-card>
+        </div>
 
-          </mat-card-content>
-        </mat-card>
+        <!--- -------------- Bugs --------------  -->
+        <div *ngFor="let bug of userStory.bugList">
+          <mat-card class="board-item" *ngIf="bug.status === IN_REVIEW">
+            <mat-card-header class="board-bug-header" (click)="openExistingBugDialog(bug)">
+              <mat-card-title>{{(bug.title.length>25)? (bug.title | slice:0:25)+'...':(bug.title)}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="owner">Owner: {{bug.owner}}</div>
+
+              <mat-form-field>
+                <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug)'>
+                  <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div>Priority: {{bug.priority}}</div>
+              <div>Estimate: {{bug.estimation}} h</div>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+
       </div>
     </div>
   </div>
@@ -228,26 +303,52 @@
           </mat-card-content>
         </mat-card>
 
+        <!--- -------------- Tasks --------------  -->
+        <div *ngFor="let task of userStory.taskList">
+          <mat-card class="board-item" *ngIf="task.status === DONE">
+            <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(task)">
+              <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="owner">Owner: {{task.owner}}</div>
 
-        <mat-card class="board-item" *ngFor="let task of getDoneTasks(userStory.taskList)">
-          <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(task)">
-            <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <div class="owner">Owner: {{task.owner}}</div>
+              <mat-form-field>
+                <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
+                  <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
+                </mat-select>
+              </mat-form-field>
 
-            <mat-form-field>
-              <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
-                <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
-              </mat-select>
-            </mat-form-field>
+              <div>Priority: {{task.priority}}</div>
+              <div>Estimate: {{task.estimation}} h</div>
 
-            <div>Priority: {{task.priority}}</div>
-            <div>Estimate: {{task.estimation}} h</div>
+            </mat-card-content>
+          </mat-card>
+        </div>
 
-          </mat-card-content>
-        </mat-card>
+        <!--- -------------- Bugs --------------  -->
+        <div *ngFor="let bug of userStory.bugList">
+          <mat-card class="board-item" *ngIf="bug.status === DONE">
+            <mat-card-header class="board-bug-header" (click)="openExistingBugDialog(bug)">
+              <mat-card-title>{{(bug.title.length>25)? (bug.title | slice:0:25)+'...':(bug.title)}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="owner">Owner: {{bug.owner}}</div>
+
+              <mat-form-field>
+                <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug)'>
+                  <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div>Priority: {{bug.priority}}</div>
+              <div>Estimate: {{bug.estimation}} h</div>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+
       </div>
+
     </div>
   </div>
 </div>

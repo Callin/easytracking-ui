@@ -1,17 +1,12 @@
-import {Task} from './task';
-import {Bug} from './bug';
-
-export class UserStory {
+export class Bug {
   id: number;
   title: string;
   description: string;
   owner: string;
   status: string;
   priority: number;
-  estimation: number;
-  projectId: number;
-  taskList: Task[];
-  bugList: Bug[];
+  estimation: number; // missing on the back end
+  userStoryId: number;
 
   constructor(id: number,
               title: string,
@@ -20,9 +15,7 @@ export class UserStory {
               estimation: number,
               description: string,
               status: string,
-              projectId: number,
-              bugList: Task[],
-              taskList: Task[]) {
+              userStoryId: number) {
     this.id = id;
     this.title = title;
     this.owner = owner;
@@ -30,8 +23,6 @@ export class UserStory {
     this.estimation = estimation;
     this.description = description;
     this.status = status;
-    this.projectId = projectId;
-    this.taskList = taskList;
-    this.bugList = bugList;
+    this.userStoryId = userStoryId;
   }
 }

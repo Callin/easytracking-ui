@@ -4,10 +4,14 @@ import {Task} from './dto/task';
 import 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Bug} from './dto/bug';
 
 @Injectable()
 export class BoardService {
-  serverUrl = 'http://localhost:4200';
+  serverUrl = 'http://localhost:4200/api';
+  userStoryUrl = this.serverUrl + '/userstory';
+  taskUrl = this.serverUrl + '/task';
+  bugUrl = this.serverUrl + '/bug';
 
   constructor(private httpClient: HttpClient) {
 
@@ -15,7 +19,7 @@ export class BoardService {
 
   createUserStory(userStory: UserStory) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.post<UserStory>(this.serverUrl + '/api/userstory', userStory, {headers: header})
+    return this.httpClient.post<UserStory>(this.userStoryUrl, userStory, {headers: header})
       .map(
         (userStoryResponse) => {
           return userStoryResponse;
@@ -30,7 +34,7 @@ export class BoardService {
 
   updateUserStory(userStory: UserStory) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.put<UserStory>(this.serverUrl + '/api/userstory', userStory, {headers: header})
+    return this.httpClient.put<UserStory>(this.userStoryUrl, userStory, {headers: header})
       .map(
         (userStoryResponse) => {
           return userStoryResponse;
@@ -40,7 +44,7 @@ export class BoardService {
 
   getUserStories() {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.get<UserStory[]>(this.serverUrl + '/api/userstory/project/1', {headers: header})
+    return this.httpClient.get<UserStory[]>(this.userStoryUrl + '/project/1', {headers: header})
       .map(
         (userStoryList) => {
           return userStoryList;
@@ -54,7 +58,7 @@ export class BoardService {
   }
 
   deleteUserStory(userStoryId: number) {
-    return this.httpClient.delete(this.serverUrl + '/api/userstory/' + userStoryId)
+    return this.httpClient.delete(this.userStoryUrl + '/' + userStoryId)
       .map(
         (response) => {
           return response;
@@ -69,7 +73,7 @@ export class BoardService {
 
   createTask(task: Task) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.post<Task>(this.serverUrl + '/api/task', task, {headers: header})
+    return this.httpClient.post<Task>(this.taskUrl, task, {headers: header})
       .map(
         (taskResponse) => {
           return taskResponse;
@@ -84,7 +88,7 @@ export class BoardService {
 
   updateTask(task: Task) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.put<Task>(this.serverUrl + '/api/task', task, {headers: header})
+    return this.httpClient.put<Task>(this.taskUrl, task, {headers: header})
       .map(
         (taskResponse) => {
           return taskResponse;
@@ -93,7 +97,46 @@ export class BoardService {
   }
 
   deleteTask(taskId: number) {
-    return this.httpClient.delete(this.serverUrl + '/api/task/' + taskId)
+    return this.httpClient.delete(this.taskUrl + '/' + taskId)
+      .map(
+        (response) => {
+          return response;
+        }
+      )
+      .catch(
+        (error: Response) => {
+          return Observable.throw(error);
+        }
+      );
+  }
+
+  createBug(bug: Bug) {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.post<Bug>(this.bugUrl, bug, {headers: header})
+      .map(
+        (taskResponse) => {
+          return taskResponse;
+        }
+      )
+      .catch(
+        (error: Response) => {
+          return Observable.throw(error);
+        }
+      );
+  }
+
+  updateBug(bug: Bug) {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.put<Bug>(this.bugUrl, bug, {headers: header})
+      .map(
+        (taskResponse) => {
+          return taskResponse;
+        }
+      );
+  }
+
+  deleteBug(bugId: number) {
+    return this.httpClient.delete(this.bugUrl + '/' + bugId)
       .map(
         (response) => {
           return response;
