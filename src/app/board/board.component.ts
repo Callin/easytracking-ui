@@ -5,8 +5,8 @@ import {Bug} from './dto/bug';
 import {BoardItemDialogComponent} from '../board-item-dialog/board-item-dialog.component';
 import {MatDialog} from '@angular/material';
 import {BoardService} from './board.service';
-import {AppConstants} from './dto/app-constants';
-import {BoardItemTypeEnum} from './dto/board-item-type-enum';
+import {AppConstants} from './util/app-constants';
+import {BoardItemTypeEnum} from './util/board-item-type-enum';
 
 @Component({
   selector: 'app-board',

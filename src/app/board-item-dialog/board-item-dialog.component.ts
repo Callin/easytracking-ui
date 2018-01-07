@@ -5,7 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
 import {BoardService} from '../board/board.service';
-import {BoardItemTypeEnum} from '../board/dto/board-item-type-enum';
+import {BoardItemTypeEnum} from '../board/util/board-item-type-enum';
 
 @Component({
   selector: 'app-board-item-dialog',
