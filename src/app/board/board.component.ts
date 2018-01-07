@@ -7,6 +7,7 @@ import {MatDialog} from '@angular/material';
 import {BoardService} from './board.service';
 import {AppConstants} from './util/app-constants';
 import {BoardItemTypeEnum} from './util/board-item-type-enum';
+import {FilterContainer} from './util/filter-container';
 
 @Component({
   selector: 'app-board',
@@ -19,6 +20,11 @@ export class BoardComponent implements OnInit {
   IN_REVIEW = AppConstants.IN_REVIEW;
   DONE = AppConstants.DONE;
   statusList = AppConstants.STATUS;
+
+  userList = ['Dragos', 'David', 'Bogdan', 'Johny'];
+  filterUserList = ['All', 'Dragos', 'David', 'Bogdan', 'Johny'];
+
+  filter: FilterContainer = new FilterContainer();
 
   isMouseOver: boolean[] = [];
 
@@ -352,5 +358,21 @@ export class BoardComponent implements OnInit {
     } else {
       return this.isMouseOver[index];
     }
+  }
+
+  onFilterOwnerChange(filter) {
+    this.filter = filter;
+  }
+
+  filterItems(item: any, filterContainer: FilterContainer, status: string): boolean {
+    if (item.status === status) {
+      if (filterContainer.owner === 'All') {
+        return true;
+      } else if (filterContainer.owner === item.owner) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

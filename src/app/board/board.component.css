@@ -79,3 +79,23 @@
 
 .div-two {
 }
+
+
+/*---- two divs side-by-side second version ---*/
+.filter-wrapper-div {
+  margin-top: 20px;
+}
+
+.filter-header {
+  display: inline;
+  padding-right: 20px;
+}
+
+.filter-owner {
+  display: inline;
+}
+
+.project-name {
+  display: inline;
+  padding-right: 20px;
+}

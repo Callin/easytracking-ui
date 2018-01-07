@@ -1,3 +1,15 @@
+<div class="filter-wrapper-div">
+  <div class="project-name">Project: EasyTracking</div>
+  <div class="filter-header">Filters:</div>
+  <div class="filter-owner">
+    <mat-form-field>
+      <mat-select placeholder='Owner' [(value)]="filter.owner" (change)='onFilterOwnerChange(filter)'>
+        <mat-option *ngFor="let user of filterUserList" value={{user}}>{{user}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+
 <div class="row">
   <div class="col-sm-3 board-column">
     <div class="board-column-header">
@@ -54,7 +66,7 @@
       <div class="div-two">
 
         <!--- -------------- userStory if status = New --------------  -->
-        <mat-card class="board-item" *ngIf="userStory.status === NEW">
+        <mat-card class="board-item" *ngIf="filterItems(userStory, filter, NEW)">
           <mat-card-header class="board-user-story-header" (click)="openExistingUserStoryDialog(userStory)">
             <mat-card-title>{{(userStory.title.length>25)? (userStory.title | slice:0:25)+'...':(userStory.title)}}
             </mat-card-title>
@@ -76,7 +88,7 @@
 
         <!--- -------------- Tasks --------------  -->
         <div *ngFor="let task of userStory.taskList">
-          <mat-card class="board-item" *ngIf="task.status === NEW">
+          <mat-card class="board-item" *ngIf="filterItems(task, filter, NEW)">
             <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(task)">
               <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
             </mat-card-header>
@@ -98,7 +110,7 @@
 
         <!--- -------------- Bugs --------------  -->
         <div *ngFor="let bug of userStory.bugList">
-          <mat-card class="board-item" *ngIf="bug.status === NEW">
+          <mat-card class="board-item" *ngIf="filterItems(bug, filter, NEW)">
             <mat-card-header class="board-bug-header" (click)="openExistingBugDialog(bug)">
               <mat-card-title>{{(bug.title.length>25)? (bug.title | slice:0:25)+'...':(bug.title)}}</mat-card-title>
             </mat-card-header>
@@ -130,7 +142,7 @@
 
 
         <!--- -------------- userStory if status = In Progress --------------  -->
-        <mat-card class="board-item" *ngIf="userStory.status === IN_PROGRESS">
+        <mat-card class="board-item" *ngIf="filterItems(userStory, filter, IN_PROGRESS)">
           <mat-card-header class="board-user-story-header" (click)="openExistingUserStoryDialog(userStory)">
             <mat-card-title>{{(userStory.title.length>25)? (userStory.title | slice:0:25)+'...':(userStory.title)}}
             </mat-card-title>
@@ -152,7 +164,7 @@
 
         <!--- -------------- Tasks --------------  -->
         <div *ngFor="let task of userStory.taskList">
-          <mat-card class="board-item" *ngIf="task.status === IN_PROGRESS">
+          <mat-card class="board-item" *ngIf="filterItems(task, filter, IN_PROGRESS)">
             <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(task)">
               <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
             </mat-card-header>
@@ -174,7 +186,7 @@
 
         <!--- -------------- Bugs --------------  -->
         <div *ngFor="let bug of userStory.bugList">
-          <mat-card class="board-item" *ngIf="bug.status === IN_PROGRESS">
+          <mat-card class="board-item" *ngIf="filterItems(bug, filter, IN_PROGRESS)">
             <mat-card-header class="board-bug-header" (click)="openExistingBugDialog(bug)">
               <mat-card-title>{{(bug.title.length>25)? (bug.title | slice:0:25)+'...':(bug.title)}}</mat-card-title>
             </mat-card-header>
@@ -206,7 +218,7 @@
 
 
         <!--- -------------- userStory if status = In Review --------------  -->
-        <mat-card class="board-item" *ngIf="userStory.status === IN_REVIEW">
+        <mat-card class="board-item" *ngIf="filterItems(userStory, filter, IN_REVIEW)">
           <mat-card-header class="board-user-story-header" (click)="openExistingUserStoryDialog(userStory)">
             <mat-card-title>{{(userStory.title.length>25)? (userStory.title | slice:0:25)+'...':(userStory.title)}}
             </mat-card-title>
@@ -228,7 +240,7 @@
 
         <!--- -------------- Tasks --------------  -->
         <div *ngFor="let task of userStory.taskList">
-          <mat-card class="board-item" *ngIf="task.status === IN_REVIEW">
+          <mat-card class="board-item" *ngIf="filterItems(task, filter, IN_REVIEW)">
             <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(task)">
               <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
             </mat-card-header>
@@ -250,7 +262,7 @@
 
         <!--- -------------- Bugs --------------  -->
         <div *ngFor="let bug of userStory.bugList">
-          <mat-card class="board-item" *ngIf="bug.status === IN_REVIEW">
+          <mat-card class="board-item" *ngIf="filterItems(bug, filter, IN_REVIEW)">
             <mat-card-header class="board-bug-header" (click)="openExistingBugDialog(bug)">
               <mat-card-title>{{(bug.title.length>25)? (bug.title | slice:0:25)+'...':(bug.title)}}</mat-card-title>
             </mat-card-header>
@@ -283,7 +295,7 @@
 
 
         <!--- -------------- userStory if status = Done --------------  -->
-        <mat-card class="board-item" *ngIf="userStory.status === DONE">
+        <mat-card class="board-item" *ngIf="filterItems(userStory, filter, DONE)">
           <mat-card-header class="board-user-story-header" (click)="openExistingUserStoryDialog(userStory)">
             <mat-card-title>{{(userStory.title.length>25)? (userStory.title | slice:0:25)+'...':(userStory.title)}}
             </mat-card-title>
@@ -305,7 +317,7 @@
 
         <!--- -------------- Tasks --------------  -->
         <div *ngFor="let task of userStory.taskList">
-          <mat-card class="board-item" *ngIf="task.status === DONE">
+          <mat-card class="board-item" *ngIf="filterItems(task, filter, DONE)">
             <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(task)">
               <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
             </mat-card-header>
@@ -327,7 +339,7 @@
 
         <!--- -------------- Bugs --------------  -->
         <div *ngFor="let bug of userStory.bugList">
-          <mat-card class="board-item" *ngIf="bug.status === DONE">
+          <mat-card class="board-item" *ngIf="filterItems(bug, filter, DONE)">
             <mat-card-header class="board-bug-header" (click)="openExistingBugDialog(bug)">
               <mat-card-title>{{(bug.title.length>25)? (bug.title | slice:0:25)+'...':(bug.title)}}</mat-card-title>
             </mat-card-header>
