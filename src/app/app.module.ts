@@ -40,6 +40,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CdkTableModule} from '@angular/cdk/table';
 import {BoardService} from './board/board.service';
 import {HttpClientModule} from '@angular/common/http';
+import { ProjectDialogComponent } from './project-dialog/project-dialog.component';
 
 
 @NgModule({
@@ -85,7 +86,8 @@ export class MaterialModule {
   declarations: [
     AppComponent,
     BoardComponent,
-    BoardItemDialogComponent
+    BoardItemDialogComponent,
+    ProjectDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -100,7 +102,7 @@ export class MaterialModule {
     MatNativeDateModule,
     ReactiveFormsModule
   ],
-  entryComponents: [BoardItemDialogComponent],
+  entryComponents: [BoardItemDialogComponent, ProjectDialogComponent],
   providers: [BoardService],
   bootstrap: [AppComponent]
 })

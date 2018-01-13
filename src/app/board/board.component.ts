@@ -7,7 +7,9 @@ import {MatDialog} from '@angular/material';
 import {BoardService} from './board.service';
 import {AppConstants} from './util/app-constants';
 import {BoardItemTypeEnum} from './util/board-item-type-enum';
-import {FilterContainer} from './util/filter-container';
+import {BoardItemsFilterContainer} from './util/board-item-filter-container';
+import {Project} from './dto/project';
+import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
 
 @Component({
   selector: 'app-board',
@@ -24,25 +26,37 @@ export class BoardComponent implements OnInit {
   userList = ['Dragos', 'David', 'Bogdan', 'Johny'];
   filterUserList = ['All', 'Dragos', 'David', 'Bogdan', 'Johny'];
 
-  filter: FilterContainer = new FilterContainer();
+  currentProjectId: number;
+  filter: BoardItemsFilterContainer = new BoardItemsFilterContainer();
 
   isMouseOver: boolean[] = [];
 
-  allUserStories: UserStory[];
+  allUserStories: UserStory[] = [];
+  allProjects: Project[] = [];
 
   constructor(public dialog: MatDialog,
               private boardService: BoardService) {
   }
 
   ngOnInit() {
-    this.onGetUserStories();
+    this.onGetProjects();
   }
 
-  onGetUserStories() {
-    return this.boardService.getUserStories()
+  onGetUserStories(projectId: number) {
+    return this.boardService.getUserStories(projectId)
       .subscribe(
         (userStoryList) => {
           this.allUserStories = userStoryList;
+        },
+        (error) => console.log(error)
+      );
+  }
+
+  onGetProjects() {
+    return this.boardService.getProjects()
+      .subscribe(
+        (projectList) => {
+          this.allProjects = projectList;
         },
         (error) => console.log(error)
       );
@@ -307,7 +321,7 @@ export class BoardComponent implements OnInit {
       0,
       'Replace with a comprehensive description',
       this.NEW,
-      1,
+      this.currentProjectId,
       null,
       null);
   }
@@ -364,7 +378,11 @@ export class BoardComponent implements OnInit {
     this.filter = filter;
   }
 
-  filterItems(item: any, filterContainer: FilterContainer, status: string): boolean {
+  onCurrentProjectIdChange() {
+    this.onGetUserStories(this.currentProjectId);
+  }
+
+  filterItems(item: any, filterContainer: BoardItemsFilterContainer, status: string): boolean {
     if (item.status === status) {
       if (filterContainer.owner === 'All') {
         return true;
@@ -374,5 +392,70 @@ export class BoardComponent implements OnInit {
     }
 
     return false;
+  }
+
+  // ------------------- project and dialog operations -------------------
+  openNewProjectDialog(): void {
+    // show predefined data
+    const project = this.getBlankProject();
+    const isNew = true;
+    const dialogRef = this.dialog.open(ProjectDialogComponent, {
+      width: '60%',
+      height: '40%',
+      data: {project, isNew}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        this.allUserStories = [];
+        this.onCreateProject(result.project);
+      }
+    });
+  }
+
+  openEditProjectDialog(): void {
+    // show predefined data
+    const project = this.allProjects.find(projectOne => projectOne.id == this.currentProjectId);
+    const isNew = true; // should be false to enable edit button
+    const dialogRef = this.dialog.open(ProjectDialogComponent, {
+      width: '60%',
+      height: '40%',
+      data: {project, isNew}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        this.onUpdateProject(result.project);
+      }
+    });
+  }
+
+  getBlankProject(): Project {
+    return new Project(
+      null,
+      'Replace with a suggestive title',
+      'Replace with a comprehensive description',
+      null);
+  }
+
+  onCreateProject(project: Project) {
+    return this.boardService.createProject(project)
+      .subscribe(
+        (response) => {
+          this.allProjects.push(response);
+          this.currentProjectId = response.id;
+        },
+        (error) => console.log(error)
+      );
+  }
+
+  onUpdateProject(project: Project) {
+    return this.boardService.updateProject(project)
+      .subscribe(
+        (response) => {
+          this.allProjects.push(response);
+        },
+        (error) => console.log(error)
+      );
   }
 }

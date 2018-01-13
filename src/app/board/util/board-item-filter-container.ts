@@ -1,4 +1,4 @@
-export class FilterContainer {
+export class BoardItemsFilterContainer {
   owner: String;
 
   constructor() {

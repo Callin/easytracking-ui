@@ -86,16 +86,23 @@
   margin-top: 20px;
 }
 
-.filter-header {
-  display: inline;
-  padding-right: 20px;
-}
-
 .filter-owner {
   display: inline;
 }
 
 .project-name {
   display: inline;
-  padding-right: 20px;
+  padding-right: 40px;
+
+}
+
+.add-project-name {
+  display: inline;
+  padding-right: 15px;
+  padding-left: 20px;
+}
+
+.edit-project-name {
+  display: inline;
+  padding-right: 15px;
 }

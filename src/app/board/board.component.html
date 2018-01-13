@@ -1,6 +1,21 @@
 <div class="filter-wrapper-div">
-  <div class="project-name">Project: EasyTracking</div>
-  <div class="filter-header">Filters:</div>
+
+  <div class="add-project-name">
+    <mat-icon color="link" (click)="openNewProjectDialog()" matTooltip="Add new project">add_box</mat-icon>
+  </div>
+  <div class="edit-project-name" *ngIf="(currentProjectId !== undefined)">
+    <mat-icon color="link" (click)="openEditProjectDialog()" matTooltip="Edit project">edit</mat-icon>
+  </div>
+
+  <div class="project-name">
+    <mat-form-field>
+      <mat-select placeholder='Project' [(value)]="currentProjectId"  (change)="onCurrentProjectIdChange()">
+        <mat-option *ngFor="let project of allProjects" value={{project.id}}>{{project.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </div>
+
   <div class="filter-owner">
     <mat-form-field>
       <mat-select placeholder='Owner' [(value)]="filter.owner" (change)='onFilterOwnerChange(filter)'>
@@ -35,13 +50,12 @@
     </div>
   </div>
 </div>
-
 <div class="row board-row" *ngIf="allUserStories.length === 0">
   <div class="col-sm-3 board-column">
     <div class="wrapper-div">
-      <div class="board-add-new-item div-one">
+      <div class="board-add-new-item">
         <div> <!-- story item-->
-          <mat-icon color="primary" (click)="openNewUserStoryDialog()">add_box</mat-icon>
+          <mat-icon color="primary" *ngIf="(currentProjectId !== undefined)" (click)="openNewUserStoryDialog()">add_box</mat-icon>
         </div>
       </div>
     </div>
