@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {UserStory} from './dto/user-story';
 import {Task} from './dto/task';
 import {Bug} from './dto/bug';
@@ -39,17 +39,27 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.boardService.changeUserStoryList.subscribe(userStoryList => {
+      this.allUserStories = userStoryList;
+    });
+
+    this.boardService.changeProjectList.subscribe(projectList => {
+      this.allProjects = projectList;
+    });
+
     this.onGetProjects();
   }
 
   onGetUserStories(projectId: number) {
-    return this.boardService.getUserStories(projectId)
-      .subscribe(
-        (userStoryList) => {
-          this.allUserStories = userStoryList;
-        },
-        (error) => console.log(error)
-      );
+    this.boardService.onGetAllUserStories(projectId);
+    //
+    // return this.boardService.getUserStories(projectId)
+    //   .subscribe(
+    //     (userStoryList) => {
+    //       this.allUserStories = userStoryList;
+    //     },
+    //     (error) => console.log(error)
+    //   );
   }
 
   onGetProjects() {

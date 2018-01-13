@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable, Output} from '@angular/core';
 import {UserStory} from './dto/user-story';
 import {Task} from './dto/task';
 import 'rxjs/Rx';
@@ -14,6 +14,12 @@ export class BoardService {
   projectUrl = this.serverUrl + '/project';
   taskUrl = this.serverUrl + '/task';
   bugUrl = this.serverUrl + '/bug';
+
+  allUserStoryList: UserStory[];
+  allProjectList: Project[];
+
+  @Output() changeUserStoryList: EventEmitter<UserStory[]> = new EventEmitter();
+  @Output() changeProjectList: EventEmitter<Project[]> = new EventEmitter();
 
   constructor(private httpClient: HttpClient) {
 
@@ -44,6 +50,17 @@ export class BoardService {
       );
   }
 
+  onGetAllUserStories(projectId: number) {
+    this.getUserStories(projectId)
+      .subscribe(
+        (userStoryList) => {
+          this.allUserStoryList = userStoryList;
+          this.changeUserStoryList.emit(this.allUserStoryList);
+        },
+        (error) => console.log(error)
+      );
+  }
+
   getUserStories(projectId: number) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
     return this.httpClient.get<UserStory[]>(this.userStoryUrl + '/project/' + projectId, {headers: header})
@@ -56,6 +73,19 @@ export class BoardService {
         (error: Response) => {
           return Observable.throw(error);
         }
+      );
+  }
+
+  onDeleteUserStory(userStory: UserStory) {
+    this.deleteUserStory(userStory.id)
+      .subscribe((response) => {
+          if (response == null) {
+            console.log('User story was removed.');
+            this.allUserStoryList.splice(this.allUserStoryList.indexOf(userStory), 1);
+            this.changeUserStoryList.emit(this.allUserStoryList);
+          }
+        },
+        (error) => console.log(error)
       );
   }
 
@@ -98,6 +128,20 @@ export class BoardService {
       );
   }
 
+  onDeleteTask(task: Task) {
+    this.deleteTask(task.id)
+      .subscribe((response) => {
+          if (response == null) {
+            console.log('Task was removed.');
+            const taskList = this.allUserStoryList.find(userStory => userStory.id === task.userStoryId).taskList;
+            taskList.splice(taskList.indexOf(task), 1);
+            this.changeUserStoryList.emit(this.allUserStoryList);
+          }
+        },
+        (error) => console.log(error)
+      );
+  }
+
   deleteTask(taskId: number) {
     return this.httpClient.delete(this.taskUrl + '/' + taskId)
       .map(
@@ -134,6 +178,20 @@ export class BoardService {
         (taskResponse) => {
           return taskResponse;
         }
+      );
+  }
+
+  onDeleteBug(bug: Bug) {
+    this.deleteBug(bug.id)
+      .subscribe((response) => {
+          if (response == null) {
+            console.log('Bug was removed.');
+            const bugList = this.allUserStoryList.find(userStory => userStory.id === bug.userStoryId).bugList;
+            bugList.splice(bugList.indexOf(bug), 1);
+            this.changeUserStoryList.emit(this.allUserStoryList);
+          }
+        },
+        (error) => console.log(error)
       );
   }
 
