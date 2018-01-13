@@ -178,7 +178,7 @@ export class BoardService {
 
   getProject(projectId: number) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.get<Project>(this.projectUrl + '/project/' + projectId, {headers: header})
+    return this.httpClient.get<Project>(this.projectUrl + '/' + projectId, {headers: header})
       .map(
         (project) => {
           return project;
@@ -193,7 +193,7 @@ export class BoardService {
 
   getProjects() {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.get<Project[]>(this.projectUrl + '/project/all', {headers: header})
+    return this.httpClient.get<Project[]>(this.projectUrl + '/all', {headers: header})
       .map(
         (projectList) => {
           return projectList;
