@@ -443,7 +443,7 @@ export class BoardComponent implements OnInit {
       .subscribe(
         (response) => {
           this.allProjects.push(response);
-          this.currentProjectId = response.id;
+          // this.currentProjectId = response.id;
         },
         (error) => console.log(error)
       );
