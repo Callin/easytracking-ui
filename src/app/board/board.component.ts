@@ -10,6 +10,8 @@ import {BoardItemTypeEnum} from './util/board-item-type-enum';
 import {BoardItemsFilterContainer} from './util/board-item-filter-container';
 import {Project} from './dto/project';
 import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
+import {SprintDialogComponent} from '../sprint-dialog/sprint-dialog.component';
+import {Sprint} from './dto/sprint';
 
 @Component({
   selector: 'app-board',
@@ -27,12 +29,14 @@ export class BoardComponent implements OnInit {
   filterUserList = ['All', 'Dragos', 'David', 'Bogdan', 'Johny'];
 
   currentProjectId: number;
+  currentSprintId: number;
   filter: BoardItemsFilterContainer = new BoardItemsFilterContainer();
 
   isMouseOver: boolean[] = [];
 
   allUserStories: UserStory[] = [];
   allProjects: Project[] = [];
+  allSprints: Sprint[] = [];
 
   constructor(public dialog: MatDialog,
               private boardService: BoardService) {
@@ -54,6 +58,10 @@ export class BoardComponent implements OnInit {
     this.boardService.onGetAllUserStories(projectId);
   }
 
+  onGetAllUserStoriesByProjectIdAndSprintId(projectId: number, sprintId: number) {
+    this.boardService.onGetAllUserStoriesByProjectIdAndSprintId(projectId, sprintId);
+  }
+
   // ------------------- user story dialog operations -------------------
 
   openNewUserStoryDialog(): void {
@@ -64,6 +72,7 @@ export class BoardComponent implements OnInit {
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
+      minHeight: 350, // assumes px
       data: {boardItem, isNew, boardItemType}
     });
 
@@ -91,6 +100,7 @@ export class BoardComponent implements OnInit {
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
+      minHeight: 350, // assumes px
       data: {boardItem, isNew, boardItemType}
     });
 
@@ -123,6 +133,7 @@ export class BoardComponent implements OnInit {
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
+      minHeight: 350, // assumes px
       data: {boardItem, isNew, boardItemType}
     });
 
@@ -150,6 +161,7 @@ export class BoardComponent implements OnInit {
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
+      minHeight: 350, // assumes px
       data: {boardItem, isNew, boardItemType}
     });
 
@@ -182,6 +194,7 @@ export class BoardComponent implements OnInit {
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
+      minHeight: 350, // assumes px
       data: {boardItem, isNew, boardItemType}
     });
 
@@ -209,6 +222,7 @@ export class BoardComponent implements OnInit {
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
+      minHeight: 350, // assumes px
       data: {boardItem, isNew, boardItemType}
     });
 
@@ -374,6 +388,10 @@ export class BoardComponent implements OnInit {
     this.onGetUserStories(this.currentProjectId);
   }
 
+  onCurrentSprintIdChange() {
+    this.onGetUserStories(this.currentProjectId);
+  }
+
   filterItems(item: any, filterContainer: BoardItemsFilterContainer, status: string): boolean {
     if (item.status === status) {
       if (filterContainer.owner === 'All') {
@@ -394,6 +412,7 @@ export class BoardComponent implements OnInit {
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       width: '60%',
       height: '40%',
+      minHeight: 350, // assumes px
       data: {project, isNew}
     });
 
@@ -412,6 +431,7 @@ export class BoardComponent implements OnInit {
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       width: '60%',
       height: '40%',
+      minHeight: 350, // assumes px
       data: {project, isNew}
     });
 
@@ -439,6 +459,67 @@ export class BoardComponent implements OnInit {
       .subscribe(
         (response) => {
           this.allProjects.push(response);
+        },
+        (error) => console.log(error)
+      );
+  }
+
+  // ------------------- sprint and dialog operations -------------------
+  openNewSprintDialog(): void {
+    // show predefined data
+    const sprint = this.getBlankSprint();
+    const isNew = true;
+    const dialogRef = this.dialog.open(SprintDialogComponent, {
+      width: '50%',
+      minWidth: 650, // assumes px
+      height: '40%',
+      data: {sprint, isNew}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        // this.allUserStories = [];
+        this.onCreateSprint(result.sprint);
+      }
+    });
+  }
+
+  openEditSprintDialog(): void {
+    // show predefined data
+    const sprint = this.allSprints.find(sprintOne => sprintOne.id == this.currentSprintId);
+    const isNew = true; // should be false to enable edit button
+    const dialogRef = this.dialog.open(SprintDialogComponent, {
+      width: '60%',
+      height: '40%',
+      data: {sprint, isNew}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        this.onUpdateSprint(result.sprint);
+      }
+    });
+  }
+
+  getBlankSprint(): Sprint {
+    return new Sprint(
+      null,
+      new Date(), // start date
+      null, // end date
+      null, // sprint number
+      null // user storyList
+    );
+  }
+
+  onCreateSprint(sprint: Sprint) {
+    this.boardService.onCreateSprint(sprint);
+  }
+
+  onUpdateSprint(sprint: Sprint) {
+    return this.boardService.updateSprint(sprint)
+      .subscribe(
+        (response) => {
+          this.allSprints.push(response);
         },
         (error) => console.log(error)
       );

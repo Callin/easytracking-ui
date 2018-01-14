@@ -1,0 +1,33 @@
+<div class="display-container">
+
+  <!--<mat-form-field class='text-input-full-width'>-->
+    <!--<input matInput placeholder='Title' [(ngModel)]='data.sprint.name'>-->
+  <!--</mat-form-field>-->
+
+  <div mat-dialog-content>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Start date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="pickerTwo" placeholder="End date">
+      <mat-datepicker-toggle matSuffix [for]="pickerTwo"></mat-datepicker-toggle>
+      <mat-datepicker #pickerTwo></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field *ngIf='!data.isNew'>
+    <input matInput placeholder='sprint number:' [(ngModel)]='data.sprint.sprintNumber'>
+    </mat-form-field>
+  </div>
+
+  <div mat-dialog-actions>
+    <div style="float: left; width: 90%">
+      <button mat-raised-button (click)='onNoClick()'>Cancel</button>
+      <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
+    </div>
+    <div style="float: right; width: 10%">
+      <button mat-raised-button color="warn" (click)='deleteSprint(data)' *ngIf='!data.isNew'>Delete
+      </button>
+    </div>
+  </div>
+</div>

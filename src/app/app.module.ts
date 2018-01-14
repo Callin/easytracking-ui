@@ -5,6 +5,12 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
 import {BoardItemDialogComponent} from './board-item-dialog/board-item-dialog.component';
 import {BoardComponent} from './board/board.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {CdkTableModule} from '@angular/cdk/table';
+import {BoardService} from './board/board.service';
+import {HttpClientModule} from '@angular/common/http';
+import {ProjectDialogComponent} from './project-dialog/project-dialog.component';
+import {SprintDialogComponent} from './sprint-dialog/sprint-dialog.component';
 import {
   MatDialogModule, MatFormFieldModule, MatInputModule, MatNativeDateModule,
   MatPaginatorModule,
@@ -36,11 +42,6 @@ import {
   MatStepperModule,
   MatAutocompleteModule
 } from '@angular/material';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {CdkTableModule} from '@angular/cdk/table';
-import {BoardService} from './board/board.service';
-import {HttpClientModule} from '@angular/common/http';
-import { ProjectDialogComponent } from './project-dialog/project-dialog.component';
 
 
 @NgModule({
@@ -87,7 +88,8 @@ export class MaterialModule {
     AppComponent,
     BoardComponent,
     BoardItemDialogComponent,
-    ProjectDialogComponent
+    ProjectDialogComponent,
+    SprintDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -102,7 +104,7 @@ export class MaterialModule {
     MatNativeDateModule,
     ReactiveFormsModule
   ],
-  entryComponents: [BoardItemDialogComponent, ProjectDialogComponent],
+  entryComponents: [BoardItemDialogComponent, ProjectDialogComponent, SprintDialogComponent],
   providers: [BoardService],
   bootstrap: [AppComponent]
 })

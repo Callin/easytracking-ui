@@ -6,20 +6,24 @@ import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Bug} from './dto/bug';
 import {Project} from './dto/project';
+import {Sprint} from './dto/sprint';
 
 @Injectable()
 export class BoardService {
   serverUrl = 'http://localhost:4200/api';
   userStoryUrl = this.serverUrl + '/userstory';
   projectUrl = this.serverUrl + '/project';
+  sprintUrl = this.serverUrl + '/sprint';
   taskUrl = this.serverUrl + '/task';
   bugUrl = this.serverUrl + '/bug';
 
   allUserStoryList: UserStory[] = [];
   allProjectList: Project[] = [];
+  allSprintList: Sprint[] = [];
 
   @Output() changeUserStoryList: EventEmitter<UserStory[]> = new EventEmitter();
   @Output() changeProjectList: EventEmitter<Project[]> = new EventEmitter();
+  @Output() changeSprintList: EventEmitter<Sprint[]> = new EventEmitter();
 
   constructor(private httpClient: HttpClient) {
 
@@ -64,6 +68,32 @@ export class BoardService {
   getUserStories(projectId: number) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
     return this.httpClient.get<UserStory[]>(this.userStoryUrl + '/project/' + projectId, {headers: header})
+      .map(
+        (userStoryList) => {
+          return userStoryList;
+        }
+      )
+      .catch(
+        (error: Response) => {
+          return Observable.throw(error);
+        }
+      );
+  }
+
+  onGetAllUserStoriesByProjectIdAndSprintId(projectId: number, sprintId: number) {
+    this.getAllUserStoriesByProjectIdAndSprintId(projectId, sprintId)
+      .subscribe(
+        (userStoryList) => {
+          this.allUserStoryList = userStoryList;
+          this.changeUserStoryList.emit(this.allUserStoryList);
+        },
+        (error) => console.log(error)
+      );
+  }
+
+  getAllUserStoriesByProjectIdAndSprintId(projectId: number, sprintId: number) {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.get<UserStory[]>(this.userStoryUrl + '/project/' + projectId + '/sprint/' + sprintId, {headers: header})
       .map(
         (userStoryList) => {
           return userStoryList;
@@ -301,6 +331,110 @@ export class BoardService {
 
   deleteProject(projectId: number) {
     return this.httpClient.delete(this.projectUrl + '/' + projectId)
+      .map(
+        (response) => {
+          return response;
+        }
+      )
+      .catch(
+        (error: Response) => {
+          return Observable.throw(error);
+        }
+      );
+  }
+
+  onCreateSprint(sprint: Sprint) {
+    this.createSprint(sprint)
+      .subscribe(
+        (response) => {
+          this.allSprintList.push(response);
+          this.changeSprintList.emit(this.allSprintList);
+        },
+        (error) => console.log(error)
+      );
+  }
+
+  createSprint(sprint: Sprint) {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.post<Sprint>(this.sprintUrl, sprint, {headers: header})
+      .map(
+        (sprintResponse) => {
+          return sprintResponse;
+        }
+      )
+      .catch(
+        (error: Response) => {
+          return Observable.throw(error);
+        }
+      );
+  }
+
+  updateSprint(sprint: Sprint) {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.put<Sprint>(this.sprintUrl, sprint, {headers: header})
+      .map(
+        (sprintResponse) => {
+          return sprintResponse;
+        }
+      );
+  }
+
+  getSprint(sprintId: number) {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.get<Sprint>(this.sprintUrl + '/' + sprintId, {headers: header})
+      .map(
+        (sprint) => {
+          return sprint;
+        }
+      )
+      .catch(
+        (error: Response) => {
+          return Observable.throw(error);
+        }
+      );
+  }
+
+  onGetSprints() {
+    this.getSprints()
+      .subscribe(
+        (sprintList) => {
+          this.allSprintList = sprintList;
+          this.changeSprintList.emit(this.allSprintList);
+        },
+        (error) => console.log(error)
+      );
+  }
+
+  getSprints() {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.get<Sprint[]>(this.sprintUrl + '/all', {headers: header})
+      .map(
+        (sprintList) => {
+          return sprintList;
+        }
+      )
+      .catch(
+        (error: Response) => {
+          return Observable.throw(error);
+        }
+      );
+  }
+
+  onDeleteSprint(sprint: Sprint) {
+    this.deleteSprint(sprint.id).subscribe(
+      (response) => {
+        if (response == null) {
+          console.log('Sprint was removed.');
+          this.allSprintList.splice(this.allSprintList.indexOf(sprint), 1);
+          this.changeSprintList.emit(this.allSprintList);
+        }
+      },
+      (error) => console.log(error)
+    );
+  }
+
+  deleteSprint(sprintId: number) {
+    return this.httpClient.delete(this.sprintUrl + '/' + sprintId)
       .map(
         (response) => {
           return response;
