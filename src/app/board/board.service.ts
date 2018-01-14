@@ -15,8 +15,8 @@ export class BoardService {
   taskUrl = this.serverUrl + '/task';
   bugUrl = this.serverUrl + '/bug';
 
-  allUserStoryList: UserStory[];
-  allProjectList: Project[];
+  allUserStoryList: UserStory[] = [];
+  allProjectList: Project[] = [];
 
   @Output() changeUserStoryList: EventEmitter<UserStory[]> = new EventEmitter();
   @Output() changeProjectList: EventEmitter<Project[]> = new EventEmitter();
@@ -209,6 +209,17 @@ export class BoardService {
       );
   }
 
+  onCreateProject(project: Project) {
+    this.createProject(project)
+      .subscribe(
+        (response) => {
+          this.allProjectList.push(response);
+          this.changeProjectList.emit(this.allProjectList);
+        },
+        (error) => console.log(error)
+      );
+  }
+
   createProject(project: Project) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
     return this.httpClient.post<Project>(this.projectUrl, project, {headers: header})
@@ -249,6 +260,17 @@ export class BoardService {
       );
   }
 
+  onGetProjects() {
+    this.getProjects()
+      .subscribe(
+        (projectList) => {
+          this.allProjectList = projectList;
+          this.changeProjectList.emit(this.allProjectList);
+        },
+        (error) => console.log(error)
+      );
+  }
+
   getProjects() {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
     return this.httpClient.get<Project[]>(this.projectUrl + '/all', {headers: header})
@@ -262,6 +284,19 @@ export class BoardService {
           return Observable.throw(error);
         }
       );
+  }
+
+  onDeleteProject(project: Project) {
+    this.deleteProject(project.id).subscribe(
+      (response) => {
+        if (response == null) {
+          console.log('Project was removed.');
+          this.allProjectList.splice(this.allProjectList.indexOf(project), 1);
+          this.changeProjectList.emit(this.allProjectList);
+        }
+      },
+      (error) => console.log(error)
+    );
   }
 
   deleteProject(projectId: number) {

@@ -24,14 +24,7 @@ export class ProjectDialogComponent implements OnInit {
   }
 
   deleteProject(data: any) {
-    this.boardService.deleteProject(data.project.id).subscribe(
-      (response) => {
-        if (response == null) {
-          console.log('Project was removed.');
-        }
-      },
-      (error) => console.log(error)
-    );
+    this.boardService.onDeleteProject(data.project);
 
     this.dialogRef.close();
   }

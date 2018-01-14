@@ -47,29 +47,11 @@ export class BoardComponent implements OnInit {
       this.allProjects = projectList;
     });
 
-    this.onGetProjects();
+    this.boardService.onGetProjects();
   }
 
   onGetUserStories(projectId: number) {
     this.boardService.onGetAllUserStories(projectId);
-    //
-    // return this.boardService.getUserStories(projectId)
-    //   .subscribe(
-    //     (userStoryList) => {
-    //       this.allUserStories = userStoryList;
-    //     },
-    //     (error) => console.log(error)
-    //   );
-  }
-
-  onGetProjects() {
-    return this.boardService.getProjects()
-      .subscribe(
-        (projectList) => {
-          this.allProjects = projectList;
-        },
-        (error) => console.log(error)
-      );
   }
 
   // ------------------- user story dialog operations -------------------
@@ -449,14 +431,7 @@ export class BoardComponent implements OnInit {
   }
 
   onCreateProject(project: Project) {
-    return this.boardService.createProject(project)
-      .subscribe(
-        (response) => {
-          this.allProjects.push(response);
-          // this.currentProjectId = response.id;
-        },
-        (error) => console.log(error)
-      );
+    this.boardService.onCreateProject(project);
   }
 
   onUpdateProject(project: Project) {
