@@ -66,10 +66,6 @@ export class BoardComponent implements OnInit {
     this.boardService.onGetAllUserStories(projectId);
   }
 
-  onGetAllUserStoriesByProjectIdAndSprintId(projectId: number, sprintId: number) {
-    this.boardService.onGetAllUserStoriesByProjectIdAndSprintId(projectId, sprintId);
-  }
-
   // ------------------- user story dialog operations -------------------
 
   openNewUserStoryDialog(): void {
@@ -398,7 +394,7 @@ export class BoardComponent implements OnInit {
   }
 
   onCurrentSprintIdChange() {
-    this.onGetUserStories(this.currentProjectId);
+    this.boardService.onGetAllUserStoriesByProjectIdAndSprintId(this.currentProjectId, this.currentSprintId);
   }
 
   filterItems(item: any, filterContainer: BoardItemsFilterContainer, status: string): boolean {
@@ -436,7 +432,7 @@ export class BoardComponent implements OnInit {
   openEditProjectDialog(): void {
     // show predefined data
     const project = this.allProjects.find(projectOne => projectOne.id == this.currentProjectId);
-    const isNew = true; // should be false to enable edit button
+    const isNew = true; // should be false to enable delete button
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       width: '60%',
       height: '40%',
@@ -495,9 +491,10 @@ export class BoardComponent implements OnInit {
   }
 
   openEditSprintDialog(): void {
-    // show predefined data
     const sprint = this.allSprints.find(sprintOne => sprintOne.id == this.currentSprintId);
-    const isNew = true; // should be false to enable edit button
+    sprint.startDate = new Date(sprint.startDate);
+    sprint.endDate = new Date(sprint.endDate);
+    const isNew = false; // should be false to enable edit button
     const dialogRef = this.dialog.open(SprintDialogComponent, {
       width: '60%',
       height: '40%',

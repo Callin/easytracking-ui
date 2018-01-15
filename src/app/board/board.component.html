@@ -24,7 +24,7 @@
 
   <div class="project-name" *ngIf="(currentProjectId !== undefined)">
     <mat-form-field>
-      <mat-select placeholder='Sprint' [(value)]="currentSprintId"  (change)="onGetAllUserStoriesByProjectIdAndSprintId(currentProjectId, currentSprintId)">
+      <mat-select placeholder='Sprint' [(value)]="currentSprintId"  (change)="onCurrentSprintIdChange()">
         <mat-option *ngFor="let sprint of allSprints" value={{sprint.id}}>Sprint {{sprint.sprintNumber}}</mat-option>
       </mat-select>
     </mat-form-field>
