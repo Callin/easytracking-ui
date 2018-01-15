@@ -394,8 +394,8 @@ export class BoardService {
       );
   }
 
-  onGetSprints() {
-    this.getSprints()
+  onGetSprints(projectId: number) {
+    this.getSprints(projectId)
       .subscribe(
         (sprintList) => {
           this.allSprintList = sprintList;
@@ -405,9 +405,9 @@ export class BoardService {
       );
   }
 
-  getSprints() {
+  getSprints(projectId: number) {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.get<Sprint[]>(this.sprintUrl + '/all', {headers: header})
+    return this.httpClient.get<Sprint[]>(this.sprintUrl + '/project/' + projectId, {headers: header})
       .map(
         (sprintList) => {
           return sprintList;

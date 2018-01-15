@@ -51,7 +51,15 @@ export class BoardComponent implements OnInit {
       this.allProjects = projectList;
     });
 
+    this.boardService.changeSprintList.subscribe(sprintList => {
+      this.allSprints = sprintList;
+    });
+
     this.boardService.onGetProjects();
+  }
+
+  onGetSprints(projectId: number) {
+    this.boardService.onGetSprints(projectId);
   }
 
   onGetUserStories(projectId: number) {
@@ -385,6 +393,7 @@ export class BoardComponent implements OnInit {
   }
 
   onCurrentProjectIdChange() {
+    this.onGetSprints(this.currentProjectId);
     this.onGetUserStories(this.currentProjectId);
   }
 
@@ -477,6 +486,7 @@ export class BoardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log('sprint: ' + sprint);
       if (result != null) {
         // this.allUserStories = [];
         this.onCreateSprint(result.sprint);
@@ -507,6 +517,7 @@ export class BoardComponent implements OnInit {
       new Date(), // start date
       null, // end date
       null, // sprint number
+      this.currentProjectId, // project id
       null // user storyList
     );
   }

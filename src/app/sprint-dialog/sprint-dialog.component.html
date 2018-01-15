@@ -1,22 +1,18 @@
 <div class="display-container">
 
-  <!--<mat-form-field class='text-input-full-width'>-->
-    <!--<input matInput placeholder='Title' [(ngModel)]='data.sprint.name'>-->
-  <!--</mat-form-field>-->
-
   <div mat-dialog-content>
     <mat-form-field>
-      <input matInput [matDatepicker]="picker" placeholder="Start date">
+      <input matInput [matDatepicker]="picker" placeholder="Start date" [(ngModel)]='data.sprint.startDate'>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
     <mat-form-field>
-      <input matInput [matDatepicker]="pickerTwo" placeholder="End date">
+      <input matInput [matDatepicker]="pickerTwo" placeholder="End date" [(ngModel)]='data.sprint.endDate'>
       <mat-datepicker-toggle matSuffix [for]="pickerTwo"></mat-datepicker-toggle>
       <mat-datepicker #pickerTwo></mat-datepicker>
     </mat-form-field>
-    <mat-form-field *ngIf='!data.isNew'>
-    <input matInput placeholder='sprint number:' [(ngModel)]='data.sprint.sprintNumber'>
+    <mat-form-field> <!--*ngIf='!data.isNew'-->
+      <input matInput placeholder='sprint number:' [(ngModel)]='data.sprint.sprintNumber'>
     </mat-form-field>
   </div>
 

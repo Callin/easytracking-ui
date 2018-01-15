@@ -15,22 +15,22 @@
     </mat-form-field>
   </div>
 
-  <div class="add-project-name">
+  <div class="add-project-name" *ngIf="(currentProjectId !== undefined)">
     <mat-icon color="link" (click)="openNewSprintDialog()" matTooltip="Add new sprint">add_box</mat-icon>
   </div>
   <div class="edit-project-name" *ngIf="(currentSprintId !== undefined)">
     <mat-icon color="link" (click)="openEditSprintDialog()" matTooltip="Edit sprint">edit</mat-icon>
   </div>
 
-  <div class="project-name">
+  <div class="project-name" *ngIf="(currentProjectId !== undefined)">
     <mat-form-field>
       <mat-select placeholder='Sprint' [(value)]="currentSprintId"  (change)="onGetAllUserStoriesByProjectIdAndSprintId(currentProjectId, currentSprintId)">
-        <mat-option *ngFor="let sprint of allSprints" value={{sprint.id}}>{{sprint.startDate}} - {{sprint.endDate}}</mat-option>
+        <mat-option *ngFor="let sprint of allSprints" value={{sprint.id}}>Sprint {{sprint.sprintNumber}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
 
-  <div class="filter-owner">
+  <div class="filter-owner" *ngIf="(currentProjectId !== undefined)">
     <mat-form-field>
       <mat-select placeholder='Owner' [(value)]="filter.owner" (change)='onFilterOwnerChange(filter)'>
         <mat-option *ngFor="let user of filterUserList" value={{user}}>{{user}}</mat-option>
