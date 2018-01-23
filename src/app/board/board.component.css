@@ -55,7 +55,8 @@
 }
 
 .board-row {
-  border-bottom: solid 1px #5db709;
+  border-bottom: solid 5px #ffd740;
+  /*border-top: solid 10px #ffd740;*/
 }
 
 .owner {

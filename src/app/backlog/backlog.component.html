@@ -1,0 +1,70 @@
+<div class="filter-wrapper-div">
+  <div class="add-project-name">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item [routerLink]="['/board']">
+        <mat-icon>dashboard</mat-icon>
+        <a>Sprint board</a>
+      </button>
+      <button mat-menu-item [routerLink]="['/backlog']">
+        <mat-icon>list</mat-icon>
+        <a>Backlog</a>
+      </button>
+    </mat-menu>
+  </div>
+
+
+  <div class="add-project-name">
+    <mat-icon color="link" (click)="openNewProjectDialog()" matTooltip="Add new project">add_box</mat-icon>
+  </div>
+  <div class="edit-project-name" *ngIf="(currentProjectId !== undefined)">
+    <mat-icon color="link" (click)="openEditProjectDialog()" matTooltip="Edit project">edit</mat-icon>
+  </div>
+
+  <div class="project-name">
+    <mat-form-field>
+      <mat-select placeholder='Project' [(value)]="currentProjectId" (change)="onCurrentProjectIdChange()">
+        <mat-option *ngFor="let project of allProjects" value={{project.id}}>{{project.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+
+  <div *ngFor="let sprint of allSprints" class="backlog-sprint">
+    <div>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Sprint {{sprint.sprintNumber}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+
+          <!--{{sprint.userStoryList.length}}-->
+          <div *ngFor="let userStory of sprint.userStoryList" style="display: inline">
+            <mat-card class="board-item">
+              <mat-card-header class="board-user-story-header" (click)="openExistingUserStoryDialog(userStory)">
+                <mat-card-title>{{(userStory.title.length>25)? (userStory.title | slice:0:25)+'...':(userStory.title)}}
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="owner">Owner: {{userStory.owner}}</div>
+
+                <mat-form-field>
+                  <mat-select [(value)]="userStory.status">
+                    <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <div>Priority: {{userStory.priority}}</div>
+                <div>Estimate: {{userStory.estimation}} h</div>
+
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

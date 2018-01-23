@@ -1,10 +1,12 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {RouterModule, Routes} from '@angular/router';
 
 import {AppComponent} from './app.component';
 import {BoardItemDialogComponent} from './board-item-dialog/board-item-dialog.component';
 import {BoardComponent} from './board/board.component';
+import {BacklogComponent} from './backlog/backlog.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CdkTableModule} from '@angular/cdk/table';
 import {BoardService} from './board/board.service';
@@ -83,10 +85,17 @@ import {
 export class MaterialModule {
 }
 
+const appRoutes: Routes = [
+  {path: 'board', component: BoardComponent},
+  {path: 'backlog', component: BacklogComponent},
+  {path: '', component: BoardComponent}
+];
+
 @NgModule({
   declarations: [
     AppComponent,
     BoardComponent,
+    BacklogComponent,
     BoardItemDialogComponent,
     ProjectDialogComponent,
     SprintDialogComponent
@@ -102,7 +111,8 @@ export class MaterialModule {
     MatDialogModule,
     MatPaginatorModule,
     MatNativeDateModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule.forRoot(appRoutes)
   ],
   entryComponents: [BoardItemDialogComponent, ProjectDialogComponent, SprintDialogComponent],
   providers: [BoardService],

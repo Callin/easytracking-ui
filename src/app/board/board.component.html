@@ -1,6 +1,22 @@
 <div class="filter-wrapper-div">
 
   <div class="add-project-name">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item [routerLink]="['/board']">
+        <mat-icon>dashboard</mat-icon>
+        <a>Sprint board</a>
+      </button>
+      <button mat-menu-item [routerLink]="['/backlog']">
+        <mat-icon>list</mat-icon>
+        <a>Backlog</a>
+      </button>
+    </mat-menu>
+  </div>
+
+  <div class="add-project-name">
     <mat-icon color="link" (click)="openNewProjectDialog()" matTooltip="Add new project">add_box</mat-icon>
   </div>
   <div class="edit-project-name" *ngIf="(currentProjectId !== undefined)">
@@ -24,7 +40,7 @@
 
   <div class="project-name" *ngIf="(currentProjectId !== undefined)">
     <mat-form-field>
-      <mat-select placeholder='Sprint' [(value)]="currentSprintId"  (change)="onCurrentSprintIdChange()">
+      <mat-select placeholder='Sprint' [(value)]="currentSprintId" (change)="onCurrentSprintIdChange()">
         <mat-option *ngFor="let sprint of allSprints" value={{sprint.id}}>Sprint {{sprint.sprintNumber}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -39,7 +55,7 @@
   </div>
 </div>
 
-<div class="row"  *ngIf="(currentProjectId !== undefined)">
+<div class="row" *ngIf="(currentProjectId !== undefined)">
   <div class="col-sm-3 board-column">
     <div class="board-column-header">
       New
