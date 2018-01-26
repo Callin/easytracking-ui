@@ -155,6 +155,7 @@ export class BacklogComponent implements OnInit {
       userStory.description,
       userStory.status,
       userStory.projectId,
+      userStory.sprintId,
       userStory.taskList,
       userStory.bugList);
   }
@@ -168,6 +169,7 @@ export class BacklogComponent implements OnInit {
     item.title = clone.title;
     item.owner = clone.owner;
     item.projectId = clone.projectId;
+    item.sprintId = clone.sprintId;
     item.taskList = clone.taskList;
     item.bugList = clone.bugList;
   }

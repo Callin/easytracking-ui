@@ -10,6 +10,7 @@ export class UserStory {
   priority: number;
   estimation: number;
   projectId: number;
+  sprintId: number;
   taskList: Task[];
   bugList: Bug[];
 
@@ -21,6 +22,7 @@ export class UserStory {
               description: string,
               status: string,
               projectId: number,
+              sprintId: number,
               bugList: Task[],
               taskList: Task[]) {
     this.id = id;
@@ -31,6 +33,7 @@ export class UserStory {
     this.description = description;
     this.status = status;
     this.projectId = projectId;
+    this.sprintId = sprintId;
     this.taskList = taskList;
     this.bugList = bugList;
   }

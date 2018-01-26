@@ -259,6 +259,7 @@ export class BoardComponent implements OnInit {
       userStory.description,
       userStory.status,
       userStory.projectId,
+      userStory.sprintId,
       userStory.taskList,
       userStory.bugList);
   }
@@ -272,6 +273,7 @@ export class BoardComponent implements OnInit {
     item.title = clone.title;
     item.owner = clone.owner;
     item.projectId = clone.projectId;
+    item.sprintId = clone.sprintId;
     item.taskList = clone.taskList;
     item.bugList = clone.bugList;
   }
@@ -332,6 +334,7 @@ export class BoardComponent implements OnInit {
       'Replace with a comprehensive description',
       this.NEW,
       this.currentProjectId,
+      this.currentSprintId,
       null,
       null);
   }
