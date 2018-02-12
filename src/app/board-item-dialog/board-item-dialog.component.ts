@@ -21,7 +21,6 @@ export class BoardItemDialogComponent implements OnInit {
   IN_REVIEW = 'In Review';
   DONE = 'Done';
   statusList = [this.NEW, this.IN_PROGRESS, this.IN_REVIEW, this.DONE];
-  userList = ['Dragos', 'David', 'Bogdan', 'Johny'];
 
   constructor(public dialogRef: MatDialogRef<BoardItemDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
@@ -29,17 +28,17 @@ export class BoardItemDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.filteredUsers = this.userCtrl.valueChanges
-      .pipe(
-        startWith(''),
-        map(val => this.filterUsers(val))
-      );
+    // this.filteredUsers = this.userCtrl.valueChanges
+    //   .pipe(
+    //     startWith(''),
+    //     map(val => this.filterUsers(val))
+    //   );
   }
 
-  filterUsers(val: string): string[] {
-    return this.userList.filter(user =>
-      user.toLowerCase().indexOf(val.toLowerCase()) === 0);
-  }
+  // filterUsers(val: string): string[] {
+  //   return this.userList.filter(user =>
+  //     user.toLowerCase().indexOf(val.toLowerCase()) === 0);
+  // }
 
   onNoClick(): void {
     console.log('No data was changed');

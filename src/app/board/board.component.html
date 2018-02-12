@@ -48,8 +48,8 @@
 
   <div class="filter-owner" *ngIf="(currentProjectId !== undefined)">
     <mat-form-field>
-      <mat-select placeholder='Owner' [(value)]="filter.owner" (change)='onFilterOwnerChange(filter)'>
-        <mat-option *ngFor="let user of filterUserList" value={{user}}>{{user}}</mat-option>
+      <mat-select placeholder='Owner' [(value)]="filter.owner.id" (change)='onFilterOwnerChange(filter)'>
+        <mat-option *ngFor="let user of allUserList" value={{user.id}}>{{user.name}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
@@ -116,7 +116,7 @@
             </mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div class="owner">Owner: {{userStory.owner}}</div>
+            <div class="owner">Owner: {{getBoardItemOwner(userStory)}}</div>
 
             <mat-form-field>
               <mat-select [(value)]="userStory.status" (change)='onUserStoryStatusChange(userStory)'>
@@ -137,7 +137,7 @@
               <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              <div class="owner">Owner: {{task.owner}}</div>
+              <div class="owner">Owner: {{getBoardItemOwner(task)}}</div>
 
               <mat-form-field>
                 <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
@@ -159,7 +159,7 @@
               <mat-card-title>{{(bug.title.length>25)? (bug.title | slice:0:25)+'...':(bug.title)}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              <div class="owner">Owner: {{bug.owner}}</div>
+              <div class="owner">Owner: {{getBoardItemOwner(bug)}}</div>
 
               <mat-form-field>
                 <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug)'>
@@ -192,7 +192,7 @@
             </mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div class="owner">Owner: {{userStory.owner}}</div>
+            <div class="owner">Owner: {{getBoardItemOwner(userStory)}}</div>
 
             <mat-form-field>
               <mat-select [(value)]="userStory.status" (change)='onUserStoryStatusChange(userStory)'>
@@ -213,7 +213,7 @@
               <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              <div class="owner">Owner: {{task.owner}}</div>
+              <div class="owner">Owner: {{getBoardItemOwner(task)}}</div>
 
               <mat-form-field>
                 <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
@@ -235,7 +235,7 @@
               <mat-card-title>{{(bug.title.length>25)? (bug.title | slice:0:25)+'...':(bug.title)}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              <div class="owner">Owner: {{bug.owner}}</div>
+              <div class="owner">Owner: {{getBoardItemOwner(bug)}}</div>
 
               <mat-form-field>
                 <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug)'>
@@ -268,7 +268,7 @@
             </mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div class="owner">Owner: {{userStory.owner}}</div>
+            <div class="owner">Owner: {{getBoardItemOwner(userStory)}}</div>
 
             <mat-form-field>
               <mat-select [(value)]="userStory.status" (change)='onUserStoryStatusChange(userStory)'>
@@ -289,7 +289,7 @@
               <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              <div class="owner">Owner: {{task.owner}}</div>
+              <div class="owner">Owner: {{getBoardItemOwner(task)}}</div>
 
               <mat-form-field>
                 <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
@@ -311,7 +311,7 @@
               <mat-card-title>{{(bug.title.length>25)? (bug.title | slice:0:25)+'...':(bug.title)}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              <div class="owner">Owner: {{bug.owner}}</div>
+              <div class="owner">Owner: {{getBoardItemOwner(bug)}}</div>
 
               <mat-form-field>
                 <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug)'>
@@ -345,7 +345,7 @@
             </mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div class="owner">Owner: {{userStory.owner}}</div>
+            <div class="owner">Owner: {{getBoardItemOwner(userStory)}}</div>
 
             <mat-form-field>
               <mat-select [(value)]="userStory.status" (change)='onUserStoryStatusChange(userStory)'>
@@ -366,7 +366,7 @@
               <mat-card-title>{{(task.title.length>25)? (task.title | slice:0:25)+'...':(task.title)}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              <div class="owner">Owner: {{task.owner}}</div>
+              <div class="owner">Owner: {{getBoardItemOwner(task)}}</div>
 
               <mat-form-field>
                 <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task)'>
@@ -388,7 +388,7 @@
               <mat-card-title>{{(bug.title.length>25)? (bug.title | slice:0:25)+'...':(bug.title)}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              <div class="owner">Owner: {{bug.owner}}</div>
+              <div class="owner">Owner: {{getBoardItemOwner(bug)}}</div>
 
               <mat-form-field>
                 <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug)'>

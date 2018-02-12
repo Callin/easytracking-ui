@@ -12,6 +12,7 @@ import {Project} from './dto/project';
 import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
 import {SprintDialogComponent} from '../sprint-dialog/sprint-dialog.component';
 import {Sprint} from './dto/sprint';
+import {User} from './dto/user';
 
 @Component({
   selector: 'app-board',
@@ -25,7 +26,6 @@ export class BoardComponent implements OnInit {
   DONE = AppConstants.DONE;
   statusList = AppConstants.STATUS;
 
-  userList = ['Dragos', 'David', 'Bogdan', 'Johny'];
   filterUserList = ['All', 'Dragos', 'David', 'Bogdan', 'Johny'];
 
   currentProjectId: number;
@@ -37,6 +37,7 @@ export class BoardComponent implements OnInit {
   allUserStories: UserStory[] = [];
   allProjects: Project[] = [];
   allSprints: Sprint[] = [];
+  allUserList: User[] = [];
 
   constructor(public dialog: MatDialog,
               private boardService: BoardService) {
@@ -55,7 +56,14 @@ export class BoardComponent implements OnInit {
       this.allSprints = sprintList;
     });
 
+    this.boardService.changeUserList.subscribe(userList => {
+      this.allUserList = userList;
+    });
+
     this.boardService.onGetProjects();
+
+    this.boardService.onGetAllUsers();
+
   }
 
   onGetSprints(projectId: number) {
@@ -73,11 +81,12 @@ export class BoardComponent implements OnInit {
     const boardItem = this.getBlankUserStory();
     const isNew = true;
     const boardItemType = BoardItemTypeEnum.USER_STORY;
+    const allUsers = this.allUserList;
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
       minHeight: 350, // assumes px
-      data: {boardItem, isNew, boardItemType}
+      data: {boardItem, isNew, boardItemType, allUsers}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -101,11 +110,12 @@ export class BoardComponent implements OnInit {
     const boardItem = this.cloneUserStory(item);
     const isNew = false;
     const boardItemType = BoardItemTypeEnum.USER_STORY;
+    const allUsers = this.allUserList;
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
       minHeight: 350, // assumes px
-      data: {boardItem, isNew, boardItemType}
+      data: {boardItem, isNew, boardItemType, allUsers}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -134,11 +144,12 @@ export class BoardComponent implements OnInit {
     const boardItem = this.getBlankBug(userStory.id);
     const isNew = true;
     const boardItemType = BoardItemTypeEnum.BUG;
+    const allUsers = this.allUserList;
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
       minHeight: 350, // assumes px
-      data: {boardItem, isNew, boardItemType}
+      data: {boardItem, isNew, boardItemType, allUsers}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -162,11 +173,12 @@ export class BoardComponent implements OnInit {
     const boardItem = this.cloneBug(item);
     const isNew = false;
     const boardItemType = BoardItemTypeEnum.BUG;
+    const allUsers = this.allUserList;
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
       minHeight: 350, // assumes px
-      data: {boardItem, isNew, boardItemType}
+      data: {boardItem, isNew, boardItemType, allUsers}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -195,11 +207,12 @@ export class BoardComponent implements OnInit {
     const boardItem = this.getBlankTask(userStory.id);
     const isNew = true;
     const boardItemType = BoardItemTypeEnum.TASK;
+    const allUsers = this.allUserList;
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
       minHeight: 350, // assumes px
-      data: {boardItem, isNew, boardItemType}
+      data: {boardItem, isNew, boardItemType, allUsers}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -223,11 +236,13 @@ export class BoardComponent implements OnInit {
     const boardItem = this.cloneTask(item);
     const isNew = false;
     const boardItemType = BoardItemTypeEnum.TASK;
+    const allUsers = this.allUserList;
+    allUsers.forEach(user => user.projectList = null);
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
       minHeight: 350, // assumes px
-      data: {boardItem, isNew, boardItemType}
+      data: {boardItem, isNew, boardItemType, allUsers}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -253,7 +268,6 @@ export class BoardComponent implements OnInit {
     return new UserStory(
       userStory.id,
       userStory.title,
-      userStory.owner,
       userStory.priority,
       userStory.estimation,
       userStory.description,
@@ -261,7 +275,8 @@ export class BoardComponent implements OnInit {
       userStory.projectId,
       userStory.sprintId,
       userStory.taskList,
-      userStory.bugList);
+      userStory.bugList,
+      userStory.user);
   }
 
   copyUserStory(item: UserStory, clone: UserStory): void {
@@ -271,23 +286,23 @@ export class BoardComponent implements OnInit {
     item.estimation = clone.estimation;
     item.priority = clone.priority;
     item.title = clone.title;
-    item.owner = clone.owner;
     item.projectId = clone.projectId;
     item.sprintId = clone.sprintId;
     item.taskList = clone.taskList;
     item.bugList = clone.bugList;
+    item.user = clone.user;
   }
 
   cloneTask(task: Task): Task {
     return new Task(
       task.id,
       task.title,
-      task.owner,
       task.priority,
       task.estimation,
       task.description,
       task.status,
-      task.userStoryId);
+      task.userStoryId,
+      task.user);
   }
 
   copyTask(item: Task, clone: Task): void {
@@ -297,20 +312,28 @@ export class BoardComponent implements OnInit {
     item.estimation = clone.estimation;
     item.priority = clone.priority;
     item.title = clone.title;
-    item.owner = clone.owner;
     item.userStoryId = clone.userStoryId;
+    item.user = clone.user;
+    // this.copyUser(item.user, clone.user);
+  }
+
+  copyUser(userOne: User, userTwo: User): void {
+    userOne.name = userTwo.name;
+    userOne.id = userTwo.id;
+    userOne.email = userTwo.email;
+    userOne.projectList = null;
   }
 
   cloneBug(bug: Bug): Bug {
     return new Bug(
       bug.id,
       bug.title,
-      bug.owner,
       bug.priority,
       bug.estimation,
       bug.description,
       bug.status,
-      bug.userStoryId);
+      bug.userStoryId,
+      bug.user);
   }
 
   copyBug(item: Bug, clone: Bug): void {
@@ -320,21 +343,21 @@ export class BoardComponent implements OnInit {
     item.estimation = clone.estimation;
     item.priority = clone.priority;
     item.title = clone.title;
-    item.owner = clone.owner;
     item.userStoryId = clone.userStoryId;
+    item.user = clone.user;
   }
 
   getBlankUserStory(): UserStory {
     return new UserStory(
       null,
       'Replace with a suggestive title',
-      '',
       0,
       0,
       'Replace with a comprehensive description',
       this.NEW,
       this.currentProjectId,
       this.currentSprintId,
+      null,
       null,
       null);
   }
@@ -343,24 +366,24 @@ export class BoardComponent implements OnInit {
     return new Task(
       null,
       'Replace with a suggestive title',
-      '',
       0,
       0,
       'Replace with a comprehensive description',
       this.NEW,
-      userStoryId);
+      userStoryId,
+      null);
   }
 
   getBlankBug(userStoryId: number): Bug {
     return new Bug(
       null,
       'Replace with a suggestive title',
-      '',
       0,
       0,
       'Replace with a comprehensive description',
       this.NEW,
-      userStoryId);
+      userStoryId,
+      null);
   }
 
   onUserStoryStatusChange(item: UserStory) {
@@ -388,6 +411,7 @@ export class BoardComponent implements OnInit {
   }
 
   onFilterOwnerChange(filter) {
+    console.log('Filter: ' + filter.owner.id);
     this.filter = filter;
   }
 
@@ -401,11 +425,19 @@ export class BoardComponent implements OnInit {
   }
 
   filterItems(item: any, filterContainer: BoardItemsFilterContainer, status: string): boolean {
-    if (item.status === status) {
-      if (filterContainer.owner === 'All') {
-        return true;
-      } else if (filterContainer.owner === item.owner) {
-        return true;
+    if (item.status == status) {
+      if (item.user !== null) {
+        if (filterContainer.owner.id == -1) {
+          return true;
+        } else if (filterContainer.owner.id == item.user.id) { // compare owner
+          return true;
+        }
+      } else {
+        if (filterContainer.owner.id == -1) {
+          return true;
+        } else if (filterContainer.owner.name == item.owner) { // compare owner
+          return true;
+        }
       }
     }
 
@@ -417,16 +449,18 @@ export class BoardComponent implements OnInit {
     // show predefined data
     const project = this.getBlankProject();
     const isNew = true;
+    const allUsers = this.allUserList;
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       width: '60%',
       height: '40%',
-      minHeight: 350, // assumes px
-      data: {project, isNew}
+      minHeight: 550, // assumes px
+      data: {project, isNew, allUsers}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         this.allUserStories = [];
+        result.project.userList = result.allUsers;
         this.onCreateProject(result.project);
       }
     });
@@ -436,15 +470,17 @@ export class BoardComponent implements OnInit {
     // show predefined data
     const project = this.allProjects.find(projectOne => projectOne.id == this.currentProjectId);
     const isNew = true; // should be false to enable delete button
+    const allUsers = this.allUserList;
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       width: '60%',
       height: '40%',
-      minHeight: 350, // assumes px
-      data: {project, isNew}
+      minHeight: 550, // assumes px
+      data: {project, isNew, allUsers}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
+        result.project.userList = result.allUsers;
         this.onUpdateProject(result.project);
       }
     });
@@ -455,6 +491,7 @@ export class BoardComponent implements OnInit {
       null,
       'Replace with a suggestive title',
       'Replace with a comprehensive description',
+      null,
       null);
   }
 
@@ -534,5 +571,23 @@ export class BoardComponent implements OnInit {
         },
         (error) => console.log(error)
       );
+  }
+
+  getBoardItemOwner(boardItem: any): string {
+    if (boardItem === null || boardItem.user === null || boardItem.user.name === null) {
+      if (boardItem.owner === 'Dragos') {
+        return 'Dragos';
+      } else if (boardItem.owner === 'Bogdan') {
+        return 'Bogdan';
+      } else if (boardItem.owner === 'David') {
+        return 'David';
+      } else if (boardItem.owner === 'Johnny') {
+        return 'Johny';
+      }
+
+      return 'none';
+    } else {
+      return boardItem.user.name;
+    }
   }
 }

@@ -12,12 +12,11 @@
     <mat-grid-list cols='2' rowHeight='11:1'>
       <mat-grid-tile>
         <mat-form-field class="text-input-half-width">
-          <mat-select placeholder='Owner' [(ngModel)]='data.boardItem.owner'>
-            <mat-option *ngFor='let user of userList' value={{user}}>{{user}}</mat-option>
+          <mat-select placeholder='Owner: ' [(ngModel)]='data.boardItem.user'>
+            <mat-option *ngFor='let user of data.allUsers' [value]='user'>{{user.name}}</mat-option>
           </mat-select>
         </mat-form-field>
       </mat-grid-tile>
-
       <mat-grid-tile>
         <mat-form-field class="text-input-half-width">
           <input matInput placeholder='Priority' [(ngModel)]='data.boardItem.priority'>

@@ -70,6 +70,7 @@ export class BacklogComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         this.allUserStories = [];
+        result.project.userList = result.allUsers;
         this.onCreateProject(result.project);
       }
     });
@@ -88,6 +89,7 @@ export class BacklogComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
+        result.project.userList.push(result.allUsers);
         this.onUpdateProject(result.project);
       }
     });
@@ -98,6 +100,7 @@ export class BacklogComponent implements OnInit {
       null,
       'Replace with a suggestive title',
       'Replace with a comprehensive description',
+      null,
       null);
   }
 
@@ -149,7 +152,6 @@ export class BacklogComponent implements OnInit {
     return new UserStory(
       userStory.id,
       userStory.title,
-      userStory.owner,
       userStory.priority,
       userStory.estimation,
       userStory.description,
@@ -157,7 +159,8 @@ export class BacklogComponent implements OnInit {
       userStory.projectId,
       userStory.sprintId,
       userStory.taskList,
-      userStory.bugList);
+      userStory.bugList,
+      userStory.user);
   }
 
   copyUserStory(item: UserStory, clone: UserStory): void {
@@ -167,10 +170,10 @@ export class BacklogComponent implements OnInit {
     item.estimation = clone.estimation;
     item.priority = clone.priority;
     item.title = clone.title;
-    item.owner = clone.owner;
     item.projectId = clone.projectId;
     item.sprintId = clone.sprintId;
     item.taskList = clone.taskList;
     item.bugList = clone.bugList;
+    item.user = clone.user;
   }
 }

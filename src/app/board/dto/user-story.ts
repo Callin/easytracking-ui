@@ -1,11 +1,11 @@
 import {Task} from './task';
 import {Bug} from './bug';
+import {User} from './user';
 
 export class UserStory {
   id: number;
   title: string;
   description: string;
-  owner: string;
   status: string;
   priority: number;
   estimation: number;
@@ -13,10 +13,10 @@ export class UserStory {
   sprintId: number;
   taskList: Task[];
   bugList: Bug[];
+  user: User;
 
   constructor(id: number,
               title: string,
-              owner: string,
               priority: number,
               estimation: number,
               description: string,
@@ -24,10 +24,10 @@ export class UserStory {
               projectId: number,
               sprintId: number,
               bugList: Task[],
-              taskList: Task[]) {
+              taskList: Task[],
+              user: User) {
     this.id = id;
     this.title = title;
-    this.owner = owner;
     this.priority = priority;
     this.estimation = estimation;
     this.description = description;
@@ -36,5 +36,6 @@ export class UserStory {
     this.sprintId = sprintId;
     this.taskList = taskList;
     this.bugList = bugList;
+    this.user = user;
   }
 }

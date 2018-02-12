@@ -1,8 +1,10 @@
+import {User} from '../dto/user';
+
 export class BoardItemsFilterContainer {
-  owner: String;
+  owner: User;
 
   constructor() {
     // default value
-    this.owner = 'All';
+    this.owner = new User(-1, 'All', null, null);
   }
 }

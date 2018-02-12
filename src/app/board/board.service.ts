@@ -7,6 +7,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Bug} from './dto/bug';
 import {Project} from './dto/project';
 import {Sprint} from './dto/sprint';
+import {User} from './dto/user';
 
 @Injectable()
 export class BoardService {
@@ -16,14 +17,17 @@ export class BoardService {
   sprintUrl = this.serverUrl + '/sprint';
   taskUrl = this.serverUrl + '/task';
   bugUrl = this.serverUrl + '/bug';
+  userUrl = this.serverUrl + '/user';
 
   allUserStoryList: UserStory[] = [];
   allProjectList: Project[] = [];
   allSprintList: Sprint[] = [];
+  allUserList: User[] = [];
 
   @Output() changeUserStoryList: EventEmitter<UserStory[]> = new EventEmitter();
   @Output() changeProjectList: EventEmitter<Project[]> = new EventEmitter();
   @Output() changeSprintList: EventEmitter<Sprint[]> = new EventEmitter();
+  @Output() changeUserList: EventEmitter<User[]> = new EventEmitter();
 
   constructor(private httpClient: HttpClient) {
 
@@ -71,6 +75,85 @@ export class BoardService {
       .map(
         (userStoryList) => {
           return userStoryList;
+        }
+      )
+      .catch(
+        (error: Response) => {
+          return Observable.throw(error);
+        }
+      );
+  }
+
+  createUser(user: User) {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.post<User>(this.userUrl, user, {headers: header})
+      .map(
+        (userResponse) => {
+          return userResponse;
+        }
+      )
+      .catch(
+        (error: Response) => {
+          return Observable.throw(error);
+        }
+      );
+  }
+
+  updateUser(user: User) {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.put<User>(this.userUrl, user, {headers: header})
+      .map(
+        (userResponse) => {
+          return userResponse;
+        }
+      );
+  }
+
+  onGetUsersByProjectId(projectId: number) {
+    this.getUsersByProjectId(projectId)
+      .subscribe(
+        (userList) => {
+          this.allUserList = userList;
+          this.allUserList.push(new User(-1, 'All', null, null)); // adds the All user
+          this.changeUserList.emit(this.allUserList);
+        },
+        (error) => console.log(error)
+      );
+  }
+
+  getUsersByProjectId(projectId: number) {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.get<User[]>(this.userUrl + '/project/' + projectId, {headers: header})
+      .map(
+        (userList) => {
+          return userList;
+        }
+      )
+      .catch(
+        (error: Response) => {
+          return Observable.throw(error);
+        }
+      );
+  }
+
+  onGetAllUsers() {
+    this.getAllUsers()
+      .subscribe(
+        (userList) => {
+          this.allUserList = userList;
+          this.allUserList.push(new User(-1, 'All', null, null));
+          this.changeUserList.emit(this.allUserList);
+        },
+        (error) => console.log(error)
+      );
+  }
+
+  getAllUsers() {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.get<User[]>(this.userUrl + '/all', {headers: header})
+      .map(
+        (users) => {
+          return users;
         }
       )
       .catch(

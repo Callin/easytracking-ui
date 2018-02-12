@@ -3,11 +3,16 @@
     <input matInput placeholder='Title' [(ngModel)]='data.project.name'>
   </mat-form-field>
 
-  <div mat-dialog-content>
+  <div mat-dialog-content class="project-dialog-content">
     <mat-form-field class='text-input-full-width'>
       <textarea matInput class='project-textarea-description' placeholder='Description'
                 [(ngModel)]='data.project.description'></textarea>
     </mat-form-field>
+    <mat-selection-list style="width: 150px; max-height: 20px;"> Users
+      <mat-list-option *ngFor="let user of data.allUsers">
+        {{user.name}}
+      </mat-list-option>
+    </mat-selection-list>
   </div>
 
   <div mat-dialog-actions>

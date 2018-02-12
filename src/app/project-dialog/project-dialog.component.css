@@ -7,3 +7,7 @@
   min-width: 500px;
   min-height: 140px;
 }
+
+.project-dialog-content {
+  min-height: 400px;
+}
