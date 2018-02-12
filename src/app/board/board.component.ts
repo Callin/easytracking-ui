@@ -449,7 +449,12 @@ export class BoardComponent implements OnInit {
     // show predefined data
     const project = this.getBlankProject();
     const isNew = true;
-    const allUsers = this.allUserList;
+    const allUsers: User[] = [];
+    this.allUserList.forEach(user => {
+      if (user.id !== -1) {
+        allUsers.push(user);
+      }
+    });
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       width: '60%',
       height: '40%',
@@ -470,7 +475,12 @@ export class BoardComponent implements OnInit {
     // show predefined data
     const project = this.allProjects.find(projectOne => projectOne.id == this.currentProjectId);
     const isNew = true; // should be false to enable delete button
-    const allUsers = this.allUserList;
+    const allUsers: User[] = [];
+    this.allUserList.forEach(user => {
+      if (user.id !== -1) {
+        allUsers.push(user);
+      }
+    });
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       width: '60%',
       height: '40%',
