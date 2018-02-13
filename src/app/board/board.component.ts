@@ -81,7 +81,7 @@ export class BoardComponent implements OnInit {
     const boardItem = this.getBlankUserStory();
     const isNew = true;
     const boardItemType = BoardItemTypeEnum.USER_STORY;
-    const allUsers = this.allUserList;
+    const allUsers = this.getExistingUsers();
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
@@ -110,7 +110,7 @@ export class BoardComponent implements OnInit {
     const boardItem = this.cloneUserStory(item);
     const isNew = false;
     const boardItemType = BoardItemTypeEnum.USER_STORY;
-    const allUsers = this.allUserList;
+    const allUsers = this.getExistingUsers();
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
@@ -144,7 +144,7 @@ export class BoardComponent implements OnInit {
     const boardItem = this.getBlankBug(userStory.id);
     const isNew = true;
     const boardItemType = BoardItemTypeEnum.BUG;
-    const allUsers = this.allUserList;
+    const allUsers = this.getExistingUsers();
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
@@ -173,7 +173,7 @@ export class BoardComponent implements OnInit {
     const boardItem = this.cloneBug(item);
     const isNew = false;
     const boardItemType = BoardItemTypeEnum.BUG;
-    const allUsers = this.allUserList;
+    const allUsers = this.getExistingUsers();
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
@@ -207,7 +207,7 @@ export class BoardComponent implements OnInit {
     const boardItem = this.getBlankTask(userStory.id);
     const isNew = true;
     const boardItemType = BoardItemTypeEnum.TASK;
-    const allUsers = this.allUserList;
+    const allUsers = this.getExistingUsers();
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
       height: '60%',
@@ -236,7 +236,7 @@ export class BoardComponent implements OnInit {
     const boardItem = this.cloneTask(item);
     const isNew = false;
     const boardItemType = BoardItemTypeEnum.TASK;
-    const allUsers = this.allUserList;
+    const allUsers = this.getExistingUsers();
     allUsers.forEach(user => user.projectList = null);
     const dialogRef = this.dialog.open(BoardItemDialogComponent, {
       width: '80%',
@@ -449,12 +449,7 @@ export class BoardComponent implements OnInit {
     // show predefined data
     const project = this.getBlankProject();
     const isNew = true;
-    const allUsers: User[] = [];
-    this.allUserList.forEach(user => {
-      if (user.id !== -1) {
-        allUsers.push(user);
-      }
-    });
+    const allUsers: User[] = this.getExistingUsers();
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       width: '60%',
       height: '40%',
@@ -475,12 +470,7 @@ export class BoardComponent implements OnInit {
     // show predefined data
     const project = this.allProjects.find(projectOne => projectOne.id == this.currentProjectId);
     const isNew = true; // should be false to enable delete button
-    const allUsers: User[] = [];
-    this.allUserList.forEach(user => {
-      if (user.id !== -1) {
-        allUsers.push(user);
-      }
-    });
+    const allUsers: User[] = this.getExistingUsers();
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       width: '60%',
       height: '40%',
@@ -494,6 +484,18 @@ export class BoardComponent implements OnInit {
         this.onUpdateProject(result.project);
       }
     });
+  }
+
+  getExistingUsers(): User[] {
+    const allUsers: User[] = [];
+
+    this.allUserList.forEach(user => {
+      if (user.id !== -1) {
+        allUsers.push(user);
+      }
+    });
+
+    return allUsers;
   }
 
   getBlankProject(): Project {
